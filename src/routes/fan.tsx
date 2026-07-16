@@ -4,6 +4,7 @@ import {
   Accessibility,
   Bot,
   CalendarClock,
+  FileWarning,
   Map as MapIcon,
   Route as RouteIcon,
   ShieldAlert,
@@ -18,6 +19,7 @@ const items = [
   { title: "Live Crowd", url: "/fan/crowd", icon: Users },
   { title: "Food Finder", url: "/fan/food", icon: Utensils },
   { title: "Emergency", url: "/fan/emergency", icon: ShieldAlert },
+  { title: "Report Incident", url: "/fan/report", icon: FileWarning },
   { title: "Accessibility", url: "/fan/accessibility", icon: Accessibility },
   { title: "Match Info", url: "/fan/match", icon: CalendarClock },
 ];
