@@ -12,6 +12,12 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as FanRouteImport } from './routes/fan'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as FanIndexRouteImport } from './routes/fan.index'
+import { Route as FanMatchRouteImport } from './routes/fan.match'
+import { Route as FanMapRouteImport } from './routes/fan.map'
+import { Route as FanFoodRouteImport } from './routes/fan.food'
+import { Route as FanEmergencyRouteImport } from './routes/fan.emergency'
+import { Route as FanCrowdRouteImport } from './routes/fan.crowd'
+import { Route as FanAccessibilityRouteImport } from './routes/fan.accessibility'
 
 const FanRoute = FanRouteImport.update({
   id: '/fan',
@@ -28,28 +34,103 @@ const FanIndexRoute = FanIndexRouteImport.update({
   path: '/',
   getParentRoute: () => FanRoute,
 } as any)
+const FanMatchRoute = FanMatchRouteImport.update({
+  id: '/match',
+  path: '/match',
+  getParentRoute: () => FanRoute,
+} as any)
+const FanMapRoute = FanMapRouteImport.update({
+  id: '/map',
+  path: '/map',
+  getParentRoute: () => FanRoute,
+} as any)
+const FanFoodRoute = FanFoodRouteImport.update({
+  id: '/food',
+  path: '/food',
+  getParentRoute: () => FanRoute,
+} as any)
+const FanEmergencyRoute = FanEmergencyRouteImport.update({
+  id: '/emergency',
+  path: '/emergency',
+  getParentRoute: () => FanRoute,
+} as any)
+const FanCrowdRoute = FanCrowdRouteImport.update({
+  id: '/crowd',
+  path: '/crowd',
+  getParentRoute: () => FanRoute,
+} as any)
+const FanAccessibilityRoute = FanAccessibilityRouteImport.update({
+  id: '/accessibility',
+  path: '/accessibility',
+  getParentRoute: () => FanRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/fan': typeof FanRouteWithChildren
+  '/fan/accessibility': typeof FanAccessibilityRoute
+  '/fan/crowd': typeof FanCrowdRoute
+  '/fan/emergency': typeof FanEmergencyRoute
+  '/fan/food': typeof FanFoodRoute
+  '/fan/map': typeof FanMapRoute
+  '/fan/match': typeof FanMatchRoute
   '/fan/': typeof FanIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/fan/accessibility': typeof FanAccessibilityRoute
+  '/fan/crowd': typeof FanCrowdRoute
+  '/fan/emergency': typeof FanEmergencyRoute
+  '/fan/food': typeof FanFoodRoute
+  '/fan/map': typeof FanMapRoute
+  '/fan/match': typeof FanMatchRoute
   '/fan': typeof FanIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/fan': typeof FanRouteWithChildren
+  '/fan/accessibility': typeof FanAccessibilityRoute
+  '/fan/crowd': typeof FanCrowdRoute
+  '/fan/emergency': typeof FanEmergencyRoute
+  '/fan/food': typeof FanFoodRoute
+  '/fan/map': typeof FanMapRoute
+  '/fan/match': typeof FanMatchRoute
   '/fan/': typeof FanIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/fan' | '/fan/'
+  fullPaths:
+    | '/'
+    | '/fan'
+    | '/fan/accessibility'
+    | '/fan/crowd'
+    | '/fan/emergency'
+    | '/fan/food'
+    | '/fan/map'
+    | '/fan/match'
+    | '/fan/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/fan'
-  id: '__root__' | '/' | '/fan' | '/fan/'
+  to:
+    | '/'
+    | '/fan/accessibility'
+    | '/fan/crowd'
+    | '/fan/emergency'
+    | '/fan/food'
+    | '/fan/map'
+    | '/fan/match'
+    | '/fan'
+  id:
+    | '__root__'
+    | '/'
+    | '/fan'
+    | '/fan/accessibility'
+    | '/fan/crowd'
+    | '/fan/emergency'
+    | '/fan/food'
+    | '/fan/map'
+    | '/fan/match'
+    | '/fan/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -80,14 +161,68 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FanIndexRouteImport
       parentRoute: typeof FanRoute
     }
+    '/fan/match': {
+      id: '/fan/match'
+      path: '/match'
+      fullPath: '/fan/match'
+      preLoaderRoute: typeof FanMatchRouteImport
+      parentRoute: typeof FanRoute
+    }
+    '/fan/map': {
+      id: '/fan/map'
+      path: '/map'
+      fullPath: '/fan/map'
+      preLoaderRoute: typeof FanMapRouteImport
+      parentRoute: typeof FanRoute
+    }
+    '/fan/food': {
+      id: '/fan/food'
+      path: '/food'
+      fullPath: '/fan/food'
+      preLoaderRoute: typeof FanFoodRouteImport
+      parentRoute: typeof FanRoute
+    }
+    '/fan/emergency': {
+      id: '/fan/emergency'
+      path: '/emergency'
+      fullPath: '/fan/emergency'
+      preLoaderRoute: typeof FanEmergencyRouteImport
+      parentRoute: typeof FanRoute
+    }
+    '/fan/crowd': {
+      id: '/fan/crowd'
+      path: '/crowd'
+      fullPath: '/fan/crowd'
+      preLoaderRoute: typeof FanCrowdRouteImport
+      parentRoute: typeof FanRoute
+    }
+    '/fan/accessibility': {
+      id: '/fan/accessibility'
+      path: '/accessibility'
+      fullPath: '/fan/accessibility'
+      preLoaderRoute: typeof FanAccessibilityRouteImport
+      parentRoute: typeof FanRoute
+    }
   }
 }
 
 interface FanRouteChildren {
+  FanAccessibilityRoute: typeof FanAccessibilityRoute
+  FanCrowdRoute: typeof FanCrowdRoute
+  FanEmergencyRoute: typeof FanEmergencyRoute
+  FanFoodRoute: typeof FanFoodRoute
+  FanMapRoute: typeof FanMapRoute
+  FanMatchRoute: typeof FanMatchRoute
   FanIndexRoute: typeof FanIndexRoute
 }
 
 const FanRouteChildren: FanRouteChildren = {
+  FanAccessibilityRoute: FanAccessibilityRoute,
+  FanCrowdRoute: FanCrowdRoute,
+  FanEmergencyRoute: FanEmergencyRoute,
+  FanFoodRoute: FanFoodRoute,
+  FanMapRoute: FanMapRoute,
+  FanMatchRoute: FanMatchRoute,
   FanIndexRoute: FanIndexRoute,
 }
 
