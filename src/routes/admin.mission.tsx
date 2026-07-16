@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "@/components/portal-shell";
+import { LiveBadge } from "@/components/live-badge";
+import { useLiveStadium } from "@/lib/live-stadium";
 import {
   AlertTriangle,
   Ambulance,
@@ -50,64 +52,73 @@ type Metric = {
   icon: LucideIcon;
 };
 
-const metrics: Metric[] = [
-  {
-    label: "Live Crowd Density",
-    value: "78%",
-    detail: "64,120 / 82,340 fans present",
-    progress: 78,
-    tone: "warning",
-    icon: Users,
-  },
-  {
-    label: "Gate Occupancy",
-    value: "94%",
-    detail: "Gate C approaching threshold",
-    progress: 94,
-    tone: "critical",
-    icon: DoorOpen,
-  },
-  {
-    label: "Queue Lengths",
-    value: "11 min",
-    detail: "Avg wait across 12 zones",
-    progress: 62,
-    tone: "warning",
-    icon: Timer,
-  },
-  {
-    label: "Weather Status",
-    value: "24°C",
-    detail: "Clear · Wind 8 km/h SW",
-    progress: 30,
-    tone: "safe",
-    icon: Cloud,
-  },
-  {
-    label: "Parking Occupancy",
-    value: "82%",
-    detail: "Lots A–D nearing capacity",
-    progress: 82,
-    tone: "warning",
-    icon: ParkingCircle,
-  },
-  {
-    label: "Medical Alerts",
-    value: "2 active",
-    detail: "Sec 118 · Sec 204",
-    progress: 25,
-    tone: "warning",
-    icon: Ambulance,
-  },
-  {
-    label: "Security Alerts",
-    value: "0 active",
-    detail: "All perimeters normal",
-    progress: 10,
-    tone: "safe",
-    icon: ShieldAlert,
-  },
-];
+function toneFor(pct: number, warn = 70, crit = 90): Tone {
+  if (pct >= crit) return "critical";
+  if (pct >= warn) return "warning";
+  return "safe";
+}
+
+function useLiveMetrics(): Metric[] {
+  const s = useLiveStadium();
+  return [
+    {
+      label: "Live Crowd Density",
+      value: `${Math.round(s.crowdDensity)}%`,
+      detail: `${Math.round(823 * s.crowdDensity).toLocaleString()} / 82,340 fans present`,
+      progress: s.crowdDensity,
+      tone: toneFor(s.crowdDensity, 65, 88),
+      icon: Users,
+    },
+    {
+      label: "Gate Occupancy",
+      value: `${Math.round(s.gateOccupancy)}%`,
+      detail: s.gateOccupancy > 90 ? "Gate C approaching threshold" : "All gates within limits",
+      progress: s.gateOccupancy,
+      tone: toneFor(s.gateOccupancy, 75, 92),
+      icon: DoorOpen,
+    },
+    {
+      label: "Queue Lengths",
+      value: `${s.foodQueue.toFixed(1)} min`,
+      detail: "Avg wait across 12 zones",
+      progress: Math.min(100, (s.foodQueue / 25) * 100),
+      tone: toneFor((s.foodQueue / 25) * 100, 50, 80),
+      icon: Timer,
+    },
+    {
+      label: "Weather Status",
+      value: "24°C",
+      detail: "Clear · Wind 8 km/h SW",
+      progress: 30,
+      tone: "safe",
+      icon: Cloud,
+    },
+    {
+      label: "Parking Occupancy",
+      value: `${Math.round(s.parkingOccupancy)}%`,
+      detail: s.parkingOccupancy > 90 ? "Lots A–D nearing capacity" : "Steady inbound flow",
+      progress: s.parkingOccupancy,
+      tone: toneFor(s.parkingOccupancy, 75, 92),
+      icon: ParkingCircle,
+    },
+    {
+      label: "Medical Alerts",
+      value: `${s.medicalAlerts} active`,
+      detail: s.medicalAlerts > 0 ? "Response teams engaged" : "No active dispatches",
+      progress: Math.min(100, s.medicalAlerts * 25),
+      tone: s.medicalAlerts >= 3 ? "critical" : s.medicalAlerts > 0 ? "warning" : "safe",
+      icon: Ambulance,
+    },
+    {
+      label: "Security Alerts",
+      value: "0 active",
+      detail: "All perimeters normal",
+      progress: 10,
+      tone: "safe",
+      icon: ShieldAlert,
+    },
+  ];
+}
 
 type Priority = "low" | "medium" | "high";
 
@@ -174,8 +185,19 @@ const recommendations: Recommendation[] = [
   },
 ];
 
-function StatusBanner() {
-  const tone: Tone = "warning";
+function StatusBanner({ metrics }: { metrics: Metric[] }) {
+  const worst: Tone = metrics.some((m) => m.tone === "critical")
+    ? "critical"
+    : metrics.some((m) => m.tone === "warning")
+      ? "warning"
+      : "safe";
+  const tone: Tone = worst;
+  const label =
+    tone === "critical"
+      ? "Critical · Immediate action"
+      : tone === "warning"
+        ? "Warning · Elevated pressure"
+        : "Safe · All systems nominal";
   const styles = toneClasses[tone];
   return (
     <div
@@ -188,7 +210,7 @@ function StatusBanner() {
         <div className="text-xs uppercase tracking-widest text-muted-foreground">Overall Stadium Status</div>
         <div className={`mt-1 flex items-center gap-2 text-2xl font-bold ${styles.text}`}>
           <span className={`h-2.5 w-2.5 rounded-full ${styles.dot} pulse-dot`} />
-          Warning · Elevated pressure
+          {label}
         </div>
         <p className="text-sm text-muted-foreground">
           Ingress load and Gate C occupancy require attention. AI Commander is generating live actions.
@@ -212,7 +234,7 @@ function StatusBanner() {
 function MetricCard({ metric }: { metric: Metric }) {
   const styles = toneClasses[metric.tone];
   return (
-    <div className="rounded-2xl border border-border/60 bg-card p-5 shadow-card">
+    <div className="rounded-2xl border border-border/60 bg-card p-5 shadow-card transition-all duration-500">
       <div className="flex items-start justify-between gap-3">
         <span className={`grid h-10 w-10 place-items-center rounded-lg ${styles.bg} ${styles.text} ring-1 ${styles.ring}`}>
           <metric.icon className="h-5 w-5" />
@@ -222,11 +244,11 @@ function MetricCard({ metric }: { metric: Metric }) {
         </span>
       </div>
       <div className="mt-4 text-xs uppercase tracking-widest text-muted-foreground">{metric.label}</div>
-      <div className="mt-1 text-2xl font-bold tabular-nums">{metric.value}</div>
+      <div className="mt-1 text-2xl font-bold tabular-nums transition-all duration-500">{metric.value}</div>
       <div className="mt-1 text-xs text-muted-foreground">{metric.detail}</div>
       <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-secondary">
         <div
-          className={`h-full rounded-full ${styles.dot}`}
+          className={`h-full rounded-full ${styles.dot} transition-all duration-700 ease-out`}
           style={{ width: `${metric.progress}%` }}
         />
       </div>
@@ -288,13 +310,16 @@ function RecommendationCard({ rec }: { rec: Recommendation }) {
 }
 
 function MissionControl() {
+  const metrics = useLiveMetrics();
   return (
     <div>
       <PageHeader
         title="Mission Control"
         description="Central AI command center — live telemetry across every stadium system."
-      />
-      <StatusBanner />
+      >
+        <LiveBadge />
+      </PageHeader>
+      <StatusBanner metrics={metrics} />
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {metrics.map((m) => (
