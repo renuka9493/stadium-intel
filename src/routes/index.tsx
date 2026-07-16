@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PortalShell } from "@/components/portal-shell";
 import { useLiveStadium } from "@/lib/live-stadium";
 import { useIncidents } from "@/lib/incidents-store";
+import { Panel, Kpi, LiveTag, Field, PriorityChip, chartTheme, MiniBar } from "@/components/ops";
 import {
   Activity,
   AlertTriangle,
@@ -82,132 +83,6 @@ function MissionControlPage() {
 }
 
 // ─────────────────────────────────────────────────────────────
-// KPI card
-// ─────────────────────────────────────────────────────────────
-
-function useAnimatedNumber(value: number) {
-  const [display, setDisplay] = useState(value);
-  useEffect(() => {
-    let raf = 0;
-    const start = display;
-    const delta = value - start;
-    const t0 = performance.now();
-    const step = (t: number) => {
-      const p = Math.min(1, (t - t0) / 400);
-      setDisplay(start + delta * (1 - Math.pow(1 - p, 3)));
-      if (p < 1) raf = requestAnimationFrame(step);
-    };
-    raf = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(raf);
-     
-  }, [value]);
-  return display;
-}
-
-function Kpi({
-  icon: Icon,
-  label,
-  value,
-  suffix,
-  delta,
-  tone = "neutral",
-}: {
-  icon: LucideIcon;
-  label: string;
-  value: number;
-  suffix?: string;
-  delta?: number;
-  tone?: "neutral" | "success" | "warning" | "critical";
-}) {
-  const animated = useAnimatedNumber(value);
-  const toneRing = {
-    neutral: "ring-border text-muted-foreground",
-    success: "ring-success/40 text-success",
-    warning: "ring-warning/40 text-warning",
-    critical: "ring-critical/40 text-critical",
-  }[tone];
-
-  const trendUp = (delta ?? 0) > 0;
-  const trendTone =
-    delta == null
-      ? ""
-      : trendUp
-        ? "text-warning"
-        : "text-success";
-
-  return (
-    <div className="rounded-[10px] border border-border bg-card p-3 shadow-card">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className={`grid h-6 w-6 place-items-center rounded-md bg-background ring-1 ${toneRing}`}>
-            <Icon className="h-3 w-3" strokeWidth={2} />
-          </div>
-          <span className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
-            {label}
-          </span>
-        </div>
-        {delta != null && (
-          <span className={`inline-flex items-center gap-0.5 text-[10px] font-medium tabular-nums ${trendTone}`}>
-            {trendUp ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}
-            {Math.abs(delta).toFixed(1)}%
-          </span>
-        )}
-      </div>
-      <div className="mt-2 flex items-baseline gap-1">
-        <span className="text-[22px] font-semibold tabular-nums tracking-tight">
-          {Math.round(animated).toLocaleString()}
-        </span>
-        {suffix && <span className="text-[12px] text-muted-foreground">{suffix}</span>}
-      </div>
-    </div>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────
-// Section card
-// ─────────────────────────────────────────────────────────────
-
-function Panel({
-  title,
-  subtitle,
-  right,
-  children,
-  className = "",
-}: {
-  title: string;
-  subtitle?: string;
-  right?: React.ReactNode;
-  children: React.ReactNode;
-  className?: string;
-}) {
-  return (
-    <section className={`rounded-[10px] border border-border bg-card shadow-card ${className}`}>
-      <header className="flex items-center justify-between gap-2 border-b border-border px-3 py-2">
-        <div className="min-w-0">
-          <h2 className="truncate text-[12px] font-semibold tracking-tight">{title}</h2>
-          {subtitle && (
-            <p className="truncate text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-              {subtitle}
-            </p>
-          )}
-        </div>
-        {right}
-      </header>
-      <div className="p-3">{children}</div>
-    </section>
-  );
-}
-
-function LiveTag() {
-  return (
-    <span className="inline-flex items-center gap-1 rounded-sm bg-background px-1.5 py-0.5 text-[9px] font-medium uppercase tracking-[0.16em] text-success ring-1 ring-success/30">
-      <span className="h-1 w-1 rounded-full bg-success pulse-dot" />
-      Live
-    </span>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────
 // Main
 // ─────────────────────────────────────────────────────────────
 
@@ -222,9 +97,9 @@ function MissionControl() {
   const parking = live.parkingOccupancy;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       {/* KPI ROW */}
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
+      <div className="grid grid-cols-2 gap-2 md:grid-cols-3 xl:grid-cols-6">
         <Kpi icon={Users} label="Attendance" value={attendance} suffix="/ 88,000" delta={0.4} tone="neutral" />
         <Kpi
           icon={Activity}
@@ -243,13 +118,13 @@ function MissionControl() {
         />
         <Kpi icon={Timer} label="Avg Queue" value={avgQueue} suffix="min" delta={-1.2} tone={avgQueue > 15 ? "warning" : "success"} />
         <Kpi icon={Car} label="Parking" value={parking} suffix="%" delta={0.8} tone={parking > 90 ? "critical" : parking > 80 ? "warning" : "success"} />
-        <Kpi icon={Cpu} label="AI Health" value={99.6} suffix="%" tone="success" />
+        <Kpi icon={Cpu} label="AI Health" value={99.6} suffix="%" tone="success" format="decimal" />
       </div>
 
       {/* MAIN GRID */}
-      <div className="grid gap-3 xl:grid-cols-[minmax(0,1.15fr)_minmax(0,1.4fr)_minmax(0,1fr)]">
+      <div className="grid gap-2 xl:grid-cols-[minmax(0,1.15fr)_minmax(0,1.4fr)_minmax(0,1fr)]">
         {/* LEFT — MAP + GATES */}
-        <div className="space-y-3">
+        <div className="space-y-2">
           <Panel title="Stadium Map" subtitle="Crowd heatmap · Sector view" right={<LiveTag />}>
             <StadiumMap density={density} />
           </Panel>
@@ -259,33 +134,25 @@ function MissionControl() {
         </div>
 
         {/* CENTER — ANALYTICS */}
-        <div className="space-y-3">
+        <div className="space-y-2">
           <Panel title="Crowd Analytics" subtitle="Density trend · last 80s" right={<LiveTag />}>
-            <div className="h-40">
+            <div className="h-36">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={live.history} margin={{ top: 5, right: 6, left: -20, bottom: 0 }}>
                   <defs>
                     <linearGradient id="density" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#2563EB" stopOpacity={0.35} />
-                      <stop offset="100%" stopColor="#2563EB" stopOpacity={0} />
+                      <stop offset="0%" stopColor={chartTheme.primary} stopOpacity={0.35} />
+                      <stop offset="100%" stopColor={chartTheme.primary} stopOpacity={0} />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid stroke="#24324A" strokeDasharray="2 4" vertical={false} />
-                  <XAxis dataKey="t" stroke="#94A3B8" fontSize={10} tickLine={false} axisLine={false} />
-                  <YAxis stroke="#94A3B8" fontSize={10} tickLine={false} axisLine={false} domain={[0, 100]} />
-                  <Tooltip
-                    contentStyle={{
-                      background: "#131C2E",
-                      border: "1px solid #24324A",
-                      borderRadius: 6,
-                      fontSize: 11,
-                    }}
-                    labelStyle={{ color: "#94A3B8" }}
-                  />
+                  <CartesianGrid stroke={chartTheme.grid} strokeDasharray="2 4" vertical={false} />
+                  <XAxis dataKey="t" stroke={chartTheme.axis} fontSize={10} tickLine={false} axisLine={false} />
+                  <YAxis stroke={chartTheme.axis} fontSize={10} tickLine={false} axisLine={false} domain={[0, 100]} />
+                  <Tooltip contentStyle={chartTheme.tooltipStyle} labelStyle={chartTheme.tooltipLabelStyle} />
                   <Area
                     type="monotone"
                     dataKey="density"
-                    stroke="#2563EB"
+                    stroke={chartTheme.primary}
                     strokeWidth={1.5}
                     fill="url(#density)"
                     isAnimationActive
@@ -296,23 +163,16 @@ function MissionControl() {
             </div>
           </Panel>
 
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="grid gap-2 sm:grid-cols-2">
             <Panel title="Queue Trends" subtitle="Avg wait · minutes">
-              <div className="h-28">
+              <div className="h-24">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={live.history} margin={{ top: 5, right: 6, left: -25, bottom: 0 }}>
-                    <CartesianGrid stroke="#24324A" strokeDasharray="2 4" vertical={false} />
-                    <XAxis dataKey="t" stroke="#94A3B8" fontSize={9} tickLine={false} axisLine={false} hide />
-                    <YAxis stroke="#94A3B8" fontSize={9} tickLine={false} axisLine={false} />
-                    <Tooltip
-                      contentStyle={{
-                        background: "#131C2E",
-                        border: "1px solid #24324A",
-                        borderRadius: 6,
-                        fontSize: 11,
-                      }}
-                    />
-                    <Line type="monotone" dataKey="food" stroke="#F59E0B" strokeWidth={1.5} dot={false} animationDuration={400} />
+                    <CartesianGrid stroke={chartTheme.grid} strokeDasharray="2 4" vertical={false} />
+                    <XAxis dataKey="t" stroke={chartTheme.axis} fontSize={9} tickLine={false} axisLine={false} hide />
+                    <YAxis stroke={chartTheme.axis} fontSize={9} tickLine={false} axisLine={false} />
+                    <Tooltip contentStyle={chartTheme.tooltipStyle} />
+                    <Line type="monotone" dataKey="food" stroke={chartTheme.warning} strokeWidth={1.5} dot={false} animationDuration={400} />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
@@ -329,13 +189,13 @@ function MissionControl() {
         </div>
 
         {/* RIGHT — AI COMMANDER */}
-        <div className="space-y-3">
+        <div className="space-y-2">
           <AiCommander live={live} incidents={activeIncidents} />
         </div>
       </div>
 
       {/* BOTTOM — TIMELINES */}
-      <div className="grid gap-3 lg:grid-cols-4">
+      <div className="grid gap-2 lg:grid-cols-4">
         <Panel title="Live Incident Timeline" subtitle="Last hour" className="lg:col-span-2">
           <IncidentTimeline />
         </Panel>
