@@ -10,6 +10,7 @@ import {
   Siren,
   Sparkles,
   History,
+  FileText,
   Users,
 } from "lucide-react";
 
@@ -24,6 +25,7 @@ const items = [
   { title: "Queue Analytics", url: "/admin/queues", icon: BarChart3 },
   { title: "Stadium Heatmap", url: "/admin/heatmap", icon: Flame },
   { title: "Emergency Center", url: "/admin/emergency", icon: Siren },
+  { title: "Executive Summary", url: "/admin/summary", icon: FileText },
 ];
 
 export const Route = createFileRoute("/admin")({
