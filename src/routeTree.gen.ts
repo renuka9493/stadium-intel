@@ -20,6 +20,7 @@ import { Route as FanFoodRouteImport } from './routes/fan.food'
 import { Route as FanEmergencyRouteImport } from './routes/fan.emergency'
 import { Route as FanCrowdRouteImport } from './routes/fan.crowd'
 import { Route as FanAccessibilityRouteImport } from './routes/fan.accessibility'
+import { Route as AdminSimulatorRouteImport } from './routes/admin.simulator'
 import { Route as AdminQueuesRouteImport } from './routes/admin.queues'
 import { Route as AdminMissionRouteImport } from './routes/admin.mission'
 import { Route as AdminIncidentsRouteImport } from './routes/admin.incidents'
@@ -83,6 +84,11 @@ const FanAccessibilityRoute = FanAccessibilityRouteImport.update({
   path: '/accessibility',
   getParentRoute: () => FanRoute,
 } as any)
+const AdminSimulatorRoute = AdminSimulatorRouteImport.update({
+  id: '/simulator',
+  path: '/simulator',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminQueuesRoute = AdminQueuesRouteImport.update({
   id: '/queues',
   path: '/queues',
@@ -130,6 +136,7 @@ export interface FileRoutesByFullPath {
   '/admin/incidents': typeof AdminIncidentsRoute
   '/admin/mission': typeof AdminMissionRoute
   '/admin/queues': typeof AdminQueuesRoute
+  '/admin/simulator': typeof AdminSimulatorRoute
   '/fan/accessibility': typeof FanAccessibilityRoute
   '/fan/crowd': typeof FanCrowdRoute
   '/fan/emergency': typeof FanEmergencyRoute
@@ -148,6 +155,7 @@ export interface FileRoutesByTo {
   '/admin/incidents': typeof AdminIncidentsRoute
   '/admin/mission': typeof AdminMissionRoute
   '/admin/queues': typeof AdminQueuesRoute
+  '/admin/simulator': typeof AdminSimulatorRoute
   '/fan/accessibility': typeof FanAccessibilityRoute
   '/fan/crowd': typeof FanCrowdRoute
   '/fan/emergency': typeof FanEmergencyRoute
@@ -169,6 +177,7 @@ export interface FileRoutesById {
   '/admin/incidents': typeof AdminIncidentsRoute
   '/admin/mission': typeof AdminMissionRoute
   '/admin/queues': typeof AdminQueuesRoute
+  '/admin/simulator': typeof AdminSimulatorRoute
   '/fan/accessibility': typeof FanAccessibilityRoute
   '/fan/crowd': typeof FanCrowdRoute
   '/fan/emergency': typeof FanEmergencyRoute
@@ -191,6 +200,7 @@ export interface FileRouteTypes {
     | '/admin/incidents'
     | '/admin/mission'
     | '/admin/queues'
+    | '/admin/simulator'
     | '/fan/accessibility'
     | '/fan/crowd'
     | '/fan/emergency'
@@ -209,6 +219,7 @@ export interface FileRouteTypes {
     | '/admin/incidents'
     | '/admin/mission'
     | '/admin/queues'
+    | '/admin/simulator'
     | '/fan/accessibility'
     | '/fan/crowd'
     | '/fan/emergency'
@@ -229,6 +240,7 @@ export interface FileRouteTypes {
     | '/admin/incidents'
     | '/admin/mission'
     | '/admin/queues'
+    | '/admin/simulator'
     | '/fan/accessibility'
     | '/fan/crowd'
     | '/fan/emergency'
@@ -324,6 +336,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FanAccessibilityRouteImport
       parentRoute: typeof FanRoute
     }
+    '/admin/simulator': {
+      id: '/admin/simulator'
+      path: '/simulator'
+      fullPath: '/admin/simulator'
+      preLoaderRoute: typeof AdminSimulatorRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/queues': {
       id: '/admin/queues'
       path: '/queues'
@@ -384,6 +403,7 @@ interface AdminRouteChildren {
   AdminIncidentsRoute: typeof AdminIncidentsRoute
   AdminMissionRoute: typeof AdminMissionRoute
   AdminQueuesRoute: typeof AdminQueuesRoute
+  AdminSimulatorRoute: typeof AdminSimulatorRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
@@ -395,6 +415,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminIncidentsRoute: AdminIncidentsRoute,
   AdminMissionRoute: AdminMissionRoute,
   AdminQueuesRoute: AdminQueuesRoute,
+  AdminSimulatorRoute: AdminSimulatorRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 
