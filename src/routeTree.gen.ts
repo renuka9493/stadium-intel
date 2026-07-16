@@ -30,6 +30,7 @@ import { Route as AdminIncidentsRouteImport } from './routes/admin.incidents'
 import { Route as AdminHeatmapRouteImport } from './routes/admin.heatmap'
 import { Route as AdminEmergencyRouteImport } from './routes/admin.emergency'
 import { Route as AdminCrowdRouteImport } from './routes/admin.crowd'
+import { Route as AdminCommanderRouteImport } from './routes/admin.commander'
 import { Route as AdminCaseRouteImport } from './routes/admin.case'
 import { Route as AdminAiRouteImport } from './routes/admin.ai'
 import { Route as AdminActivityRouteImport } from './routes/admin.activity'
@@ -139,6 +140,11 @@ const AdminCrowdRoute = AdminCrowdRouteImport.update({
   path: '/crowd',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminCommanderRoute = AdminCommanderRouteImport.update({
+  id: '/commander',
+  path: '/commander',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminCaseRoute = AdminCaseRouteImport.update({
   id: '/case',
   path: '/case',
@@ -162,6 +168,7 @@ export interface FileRoutesByFullPath {
   '/admin/activity': typeof AdminActivityRoute
   '/admin/ai': typeof AdminAiRoute
   '/admin/case': typeof AdminCaseRoute
+  '/admin/commander': typeof AdminCommanderRoute
   '/admin/crowd': typeof AdminCrowdRoute
   '/admin/emergency': typeof AdminEmergencyRoute
   '/admin/heatmap': typeof AdminHeatmapRoute
@@ -186,6 +193,7 @@ export interface FileRoutesByTo {
   '/admin/activity': typeof AdminActivityRoute
   '/admin/ai': typeof AdminAiRoute
   '/admin/case': typeof AdminCaseRoute
+  '/admin/commander': typeof AdminCommanderRoute
   '/admin/crowd': typeof AdminCrowdRoute
   '/admin/emergency': typeof AdminEmergencyRoute
   '/admin/heatmap': typeof AdminHeatmapRoute
@@ -213,6 +221,7 @@ export interface FileRoutesById {
   '/admin/activity': typeof AdminActivityRoute
   '/admin/ai': typeof AdminAiRoute
   '/admin/case': typeof AdminCaseRoute
+  '/admin/commander': typeof AdminCommanderRoute
   '/admin/crowd': typeof AdminCrowdRoute
   '/admin/emergency': typeof AdminEmergencyRoute
   '/admin/heatmap': typeof AdminHeatmapRoute
@@ -241,6 +250,7 @@ export interface FileRouteTypes {
     | '/admin/activity'
     | '/admin/ai'
     | '/admin/case'
+    | '/admin/commander'
     | '/admin/crowd'
     | '/admin/emergency'
     | '/admin/heatmap'
@@ -265,6 +275,7 @@ export interface FileRouteTypes {
     | '/admin/activity'
     | '/admin/ai'
     | '/admin/case'
+    | '/admin/commander'
     | '/admin/crowd'
     | '/admin/emergency'
     | '/admin/heatmap'
@@ -291,6 +302,7 @@ export interface FileRouteTypes {
     | '/admin/activity'
     | '/admin/ai'
     | '/admin/case'
+    | '/admin/commander'
     | '/admin/crowd'
     | '/admin/emergency'
     | '/admin/heatmap'
@@ -466,6 +478,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminCrowdRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/commander': {
+      id: '/admin/commander'
+      path: '/commander'
+      fullPath: '/admin/commander'
+      preLoaderRoute: typeof AdminCommanderRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/case': {
       id: '/admin/case'
       path: '/case'
@@ -494,6 +513,7 @@ interface AdminRouteChildren {
   AdminActivityRoute: typeof AdminActivityRoute
   AdminAiRoute: typeof AdminAiRoute
   AdminCaseRoute: typeof AdminCaseRoute
+  AdminCommanderRoute: typeof AdminCommanderRoute
   AdminCrowdRoute: typeof AdminCrowdRoute
   AdminEmergencyRoute: typeof AdminEmergencyRoute
   AdminHeatmapRoute: typeof AdminHeatmapRoute
@@ -509,6 +529,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminActivityRoute: AdminActivityRoute,
   AdminAiRoute: AdminAiRoute,
   AdminCaseRoute: AdminCaseRoute,
+  AdminCommanderRoute: AdminCommanderRoute,
   AdminCrowdRoute: AdminCrowdRoute,
   AdminEmergencyRoute: AdminEmergencyRoute,
   AdminHeatmapRoute: AdminHeatmapRoute,

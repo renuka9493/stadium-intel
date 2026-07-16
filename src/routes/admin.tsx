@@ -25,6 +25,7 @@ const items = [
   { title: "Emergency Center", url: "/admin/emergency", icon: Siren },
   { title: "Reports", url: "/admin/summary", icon: FileText },
   { title: "AI Recommendations", url: "/admin/ai", icon: Sparkles },
+  { title: "AI Mission Commander", url: "/admin/commander", icon: Bot },
   { title: "Activity Log", url: "/admin/activity", icon: History },
   { title: "Case Report", url: "/admin/case", icon: FileSearch },
   { title: "Settings", url: "/admin", icon: Settings },
