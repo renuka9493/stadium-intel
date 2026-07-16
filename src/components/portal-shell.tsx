@@ -159,7 +159,7 @@ export function PortalShell({ label, items, children }: Props) {
             </div>
           </header>
           <main className="flex-1 bg-background">
-            <div className="mx-auto w-full max-w-[1600px] p-4 sm:p-5 lg:p-6 fade-in">
+            <div className="mx-auto w-full max-w-[1720px] p-3 lg:p-3.5 fade-in">
               {children ?? <Outlet />}
             </div>
           </main>
@@ -188,14 +188,16 @@ export function PageHeader({
   children?: React.ReactNode;
 }) {
   return (
-    <div className="mb-4 grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 sm:flex sm:items-center sm:justify-between">
-      <div className="min-w-0">
-        <h1 className="truncate text-lg font-semibold tracking-tight sm:text-xl">{title}</h1>
+    <div className="mb-3 flex flex-wrap items-center justify-between gap-2 border-b border-border pb-2">
+      <div className="flex min-w-0 items-baseline gap-2.5">
+        <h1 className="truncate text-[13px] font-semibold tracking-tight">{title}</h1>
         {description ? (
-          <p className="mt-0.5 text-[13px] text-muted-foreground">{description}</p>
+          <p className="hidden truncate text-[10.5px] uppercase tracking-[0.14em] text-muted-foreground sm:block">
+            {description}
+          </p>
         ) : null}
       </div>
-      {children ? <div className="flex shrink-0 flex-wrap items-center gap-2">{children}</div> : null}
+      {children ? <div className="flex shrink-0 flex-wrap items-center gap-1.5">{children}</div> : null}
     </div>
   );
 }
