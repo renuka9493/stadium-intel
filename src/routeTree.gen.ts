@@ -9,38 +9,63 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as FanRouteImport } from './routes/fan'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as FanIndexRouteImport } from './routes/fan.index'
 
+const FanRoute = FanRouteImport.update({
+  id: '/fan',
+  path: '/fan',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FanIndexRoute = FanIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => FanRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/fan': typeof FanRouteWithChildren
+  '/fan/': typeof FanIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/fan': typeof FanIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/fan': typeof FanRouteWithChildren
+  '/fan/': typeof FanIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/fan' | '/fan/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/fan'
+  id: '__root__' | '/' | '/fan' | '/fan/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  FanRoute: typeof FanRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/fan': {
+      id: '/fan'
+      path: '/fan'
+      fullPath: '/fan'
+      preLoaderRoute: typeof FanRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +73,29 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/fan/': {
+      id: '/fan/'
+      path: '/'
+      fullPath: '/fan/'
+      preLoaderRoute: typeof FanIndexRouteImport
+      parentRoute: typeof FanRoute
+    }
   }
 }
 
+interface FanRouteChildren {
+  FanIndexRoute: typeof FanIndexRoute
+}
+
+const FanRouteChildren: FanRouteChildren = {
+  FanIndexRoute: FanIndexRoute,
+}
+
+const FanRouteWithChildren = FanRoute._addFileChildren(FanRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  FanRoute: FanRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
