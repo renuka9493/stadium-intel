@@ -9,6 +9,7 @@ import {
   Radar,
   Siren,
   Sparkles,
+  History,
   Users,
 } from "lucide-react";
 
@@ -18,6 +19,7 @@ const items = [
   { title: "AI Scenario Simulator", url: "/admin/simulator", icon: FlaskConical },
   { title: "Crowd Monitoring", url: "/admin/crowd", icon: Users },
   { title: "AI Recommendations", url: "/admin/ai", icon: Sparkles },
+  { title: "AI Activity Log", url: "/admin/activity", icon: History },
   { title: "Incident Reports", url: "/admin/incidents", icon: Activity },
   { title: "Queue Analytics", url: "/admin/queues", icon: BarChart3 },
   { title: "Stadium Heatmap", url: "/admin/heatmap", icon: Flame },
