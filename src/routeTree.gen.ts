@@ -29,6 +29,7 @@ import { Route as AdminHeatmapRouteImport } from './routes/admin.heatmap'
 import { Route as AdminEmergencyRouteImport } from './routes/admin.emergency'
 import { Route as AdminCrowdRouteImport } from './routes/admin.crowd'
 import { Route as AdminAiRouteImport } from './routes/admin.ai'
+import { Route as AdminActivityRouteImport } from './routes/admin.activity'
 
 const FanRoute = FanRouteImport.update({
   id: '/fan',
@@ -130,11 +131,17 @@ const AdminAiRoute = AdminAiRouteImport.update({
   path: '/ai',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminActivityRoute = AdminActivityRouteImport.update({
+  id: '/activity',
+  path: '/activity',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/fan': typeof FanRouteWithChildren
+  '/admin/activity': typeof AdminActivityRoute
   '/admin/ai': typeof AdminAiRoute
   '/admin/crowd': typeof AdminCrowdRoute
   '/admin/emergency': typeof AdminEmergencyRoute
@@ -155,6 +162,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin/activity': typeof AdminActivityRoute
   '/admin/ai': typeof AdminAiRoute
   '/admin/crowd': typeof AdminCrowdRoute
   '/admin/emergency': typeof AdminEmergencyRoute
@@ -178,6 +186,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/fan': typeof FanRouteWithChildren
+  '/admin/activity': typeof AdminActivityRoute
   '/admin/ai': typeof AdminAiRoute
   '/admin/crowd': typeof AdminCrowdRoute
   '/admin/emergency': typeof AdminEmergencyRoute
@@ -202,6 +211,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/fan'
+    | '/admin/activity'
     | '/admin/ai'
     | '/admin/crowd'
     | '/admin/emergency'
@@ -222,6 +232,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin/activity'
     | '/admin/ai'
     | '/admin/crowd'
     | '/admin/emergency'
@@ -244,6 +255,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/fan'
+    | '/admin/activity'
     | '/admin/ai'
     | '/admin/crowd'
     | '/admin/emergency'
@@ -411,10 +423,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAiRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/activity': {
+      id: '/admin/activity'
+      path: '/activity'
+      fullPath: '/admin/activity'
+      preLoaderRoute: typeof AdminActivityRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
 interface AdminRouteChildren {
+  AdminActivityRoute: typeof AdminActivityRoute
   AdminAiRoute: typeof AdminAiRoute
   AdminCrowdRoute: typeof AdminCrowdRoute
   AdminEmergencyRoute: typeof AdminEmergencyRoute
@@ -427,6 +447,7 @@ interface AdminRouteChildren {
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminActivityRoute: AdminActivityRoute,
   AdminAiRoute: AdminAiRoute,
   AdminCrowdRoute: AdminCrowdRoute,
   AdminEmergencyRoute: AdminEmergencyRoute,
