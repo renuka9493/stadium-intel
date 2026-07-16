@@ -129,7 +129,7 @@ function Landing() {
                 </div>
               ))}
             </div>
-            <div className="mt-4 grid grid-cols-24 gap-1">
+            <div className="mt-4 grid gap-1 grid-cols-[repeat(24,minmax(0,1fr))] sm:grid-cols-[repeat(48,minmax(0,1fr))]">
               {Array.from({ length: 48 }).map((_, i) => {
                 const h = 20 + Math.round(60 * Math.abs(Math.sin(i * 0.7)));
                 const green = i % 7 !== 3 && i % 11 !== 5;
