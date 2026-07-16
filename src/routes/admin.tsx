@@ -3,6 +3,7 @@ import { PortalShell } from "@/components/portal-shell";
 import {
   Activity,
   BarChart3,
+  FlaskConical,
   Flame,
   LayoutDashboard,
   Radar,
@@ -14,6 +15,7 @@ import {
 const items = [
   { title: "Dashboard", url: "/admin", icon: LayoutDashboard },
   { title: "Mission Control", url: "/admin/mission", icon: Radar },
+  { title: "AI Scenario Simulator", url: "/admin/simulator", icon: FlaskConical },
   { title: "Crowd Monitoring", url: "/admin/crowd", icon: Users },
   { title: "AI Recommendations", url: "/admin/ai", icon: Sparkles },
   { title: "Incident Reports", url: "/admin/incidents", icon: Activity },
