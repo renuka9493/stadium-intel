@@ -21,6 +21,7 @@ import { Route as FanFoodRouteImport } from './routes/fan.food'
 import { Route as FanEmergencyRouteImport } from './routes/fan.emergency'
 import { Route as FanCrowdRouteImport } from './routes/fan.crowd'
 import { Route as FanAccessibilityRouteImport } from './routes/fan.accessibility'
+import { Route as AdminSummaryRouteImport } from './routes/admin.summary'
 import { Route as AdminSimulatorRouteImport } from './routes/admin.simulator'
 import { Route as AdminQueuesRouteImport } from './routes/admin.queues'
 import { Route as AdminMissionRouteImport } from './routes/admin.mission'
@@ -91,6 +92,11 @@ const FanAccessibilityRoute = FanAccessibilityRouteImport.update({
   path: '/accessibility',
   getParentRoute: () => FanRoute,
 } as any)
+const AdminSummaryRoute = AdminSummaryRouteImport.update({
+  id: '/summary',
+  path: '/summary',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminSimulatorRoute = AdminSimulatorRouteImport.update({
   id: '/simulator',
   path: '/simulator',
@@ -150,6 +156,7 @@ export interface FileRoutesByFullPath {
   '/admin/mission': typeof AdminMissionRoute
   '/admin/queues': typeof AdminQueuesRoute
   '/admin/simulator': typeof AdminSimulatorRoute
+  '/admin/summary': typeof AdminSummaryRoute
   '/fan/accessibility': typeof FanAccessibilityRoute
   '/fan/crowd': typeof FanCrowdRoute
   '/fan/emergency': typeof FanEmergencyRoute
@@ -171,6 +178,7 @@ export interface FileRoutesByTo {
   '/admin/mission': typeof AdminMissionRoute
   '/admin/queues': typeof AdminQueuesRoute
   '/admin/simulator': typeof AdminSimulatorRoute
+  '/admin/summary': typeof AdminSummaryRoute
   '/fan/accessibility': typeof FanAccessibilityRoute
   '/fan/crowd': typeof FanCrowdRoute
   '/fan/emergency': typeof FanEmergencyRoute
@@ -195,6 +203,7 @@ export interface FileRoutesById {
   '/admin/mission': typeof AdminMissionRoute
   '/admin/queues': typeof AdminQueuesRoute
   '/admin/simulator': typeof AdminSimulatorRoute
+  '/admin/summary': typeof AdminSummaryRoute
   '/fan/accessibility': typeof FanAccessibilityRoute
   '/fan/crowd': typeof FanCrowdRoute
   '/fan/emergency': typeof FanEmergencyRoute
@@ -220,6 +229,7 @@ export interface FileRouteTypes {
     | '/admin/mission'
     | '/admin/queues'
     | '/admin/simulator'
+    | '/admin/summary'
     | '/fan/accessibility'
     | '/fan/crowd'
     | '/fan/emergency'
@@ -241,6 +251,7 @@ export interface FileRouteTypes {
     | '/admin/mission'
     | '/admin/queues'
     | '/admin/simulator'
+    | '/admin/summary'
     | '/fan/accessibility'
     | '/fan/crowd'
     | '/fan/emergency'
@@ -264,6 +275,7 @@ export interface FileRouteTypes {
     | '/admin/mission'
     | '/admin/queues'
     | '/admin/simulator'
+    | '/admin/summary'
     | '/fan/accessibility'
     | '/fan/crowd'
     | '/fan/emergency'
@@ -367,6 +379,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FanAccessibilityRouteImport
       parentRoute: typeof FanRoute
     }
+    '/admin/summary': {
+      id: '/admin/summary'
+      path: '/summary'
+      fullPath: '/admin/summary'
+      preLoaderRoute: typeof AdminSummaryRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/simulator': {
       id: '/admin/simulator'
       path: '/simulator'
@@ -443,6 +462,7 @@ interface AdminRouteChildren {
   AdminMissionRoute: typeof AdminMissionRoute
   AdminQueuesRoute: typeof AdminQueuesRoute
   AdminSimulatorRoute: typeof AdminSimulatorRoute
+  AdminSummaryRoute: typeof AdminSummaryRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
@@ -456,6 +476,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminMissionRoute: AdminMissionRoute,
   AdminQueuesRoute: AdminQueuesRoute,
   AdminSimulatorRoute: AdminSimulatorRoute,
+  AdminSummaryRoute: AdminSummaryRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 
@@ -493,3 +514,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
