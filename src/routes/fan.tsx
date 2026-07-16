@@ -5,6 +5,7 @@ import {
   Bot,
   CalendarClock,
   Map as MapIcon,
+  Route as RouteIcon,
   ShieldAlert,
   Users,
   Utensils,
@@ -12,6 +13,7 @@ import {
 
 const items = [
   { title: "AI Assistant", url: "/fan", icon: Bot },
+  { title: "Fan Journey", url: "/fan/journey", icon: RouteIcon },
   { title: "Stadium Map", url: "/fan/map", icon: MapIcon },
   { title: "Live Crowd", url: "/fan/crowd", icon: Users },
   { title: "Food Finder", url: "/fan/food", icon: Utensils },
