@@ -12,6 +12,7 @@ import {
   History,
   FileText,
   Users,
+  FileSearch,
 } from "lucide-react";
 
 const items = [
@@ -22,6 +23,7 @@ const items = [
   { title: "AI Recommendations", url: "/admin/ai", icon: Sparkles },
   { title: "AI Activity Log", url: "/admin/activity", icon: History },
   { title: "Incident Reports", url: "/admin/incidents", icon: Activity },
+  { title: "Case Report", url: "/admin/case", icon: FileSearch },
   { title: "Queue Analytics", url: "/admin/queues", icon: BarChart3 },
   { title: "Stadium Heatmap", url: "/admin/heatmap", icon: Flame },
   { title: "Emergency Center", url: "/admin/emergency", icon: Siren },
