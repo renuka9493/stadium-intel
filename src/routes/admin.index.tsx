@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "@/components/portal-shell";
+import { LiveBadge } from "@/components/live-badge";
+import { useLiveStadium } from "@/lib/live-stadium";
 import { Activity, ArrowUpRight, ShieldCheck, Ticket, Users } from "lucide-react";
 import {
   Area,
@@ -49,9 +51,17 @@ const donut = [
 ];
 
 function AdminDashboard() {
+  const live = useLiveStadium();
+  const kpis = [
+    { label: "Attendance", value: Math.round(823 * live.crowdDensity).toLocaleString(), delta: "+2.4%", icon: Users, tone: "primary" as const },
+    { label: "Density Index", value: (live.crowdDensity / 100).toFixed(2), delta: `${live.crowdDensity > 65 ? "+" : "-"}0.0${Math.abs(Math.round(live.crowdDensity) % 9)}`, icon: Activity, tone: "accent" as const },
+    { label: "Medical Alerts", value: String(live.medicalAlerts), delta: live.medicalAlerts > 2 ? "+1" : "-1", icon: ShieldCheck, tone: "accent" as const },
+    { label: "Gate Occupancy", value: `${Math.round(live.gateOccupancy)}%`, delta: live.gateOccupancy > 85 ? "high" : "ok", icon: Ticket, tone: "primary" as const },
+  ];
   return (
     <div>
       <PageHeader title="Command Dashboard" description="Live operational picture for Lusail Stadium — Match 32.">
+        <LiveBadge />
         <span className="hidden rounded-full bg-accent/15 px-3 py-1 text-xs font-semibold text-accent sm:inline">All systems nominal</span>
       </PageHeader>
 
@@ -66,7 +76,7 @@ function AdminDashboard() {
                 <ArrowUpRight className="h-3 w-3" /> {k.delta}
               </span>
             </div>
-            <div className="mt-3 text-2xl font-bold tabular-nums">{k.value}</div>
+            <div className="mt-3 text-2xl font-bold tabular-nums transition-all duration-500">{k.value}</div>
             <div className="text-xs uppercase tracking-widest text-muted-foreground">{k.label}</div>
           </div>
         ))}
