@@ -10,18 +10,31 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as FanRouteImport } from './routes/fan'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as FanIndexRouteImport } from './routes/fan.index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as FanMatchRouteImport } from './routes/fan.match'
 import { Route as FanMapRouteImport } from './routes/fan.map'
 import { Route as FanFoodRouteImport } from './routes/fan.food'
 import { Route as FanEmergencyRouteImport } from './routes/fan.emergency'
 import { Route as FanCrowdRouteImport } from './routes/fan.crowd'
 import { Route as FanAccessibilityRouteImport } from './routes/fan.accessibility'
+import { Route as AdminQueuesRouteImport } from './routes/admin.queues'
+import { Route as AdminIncidentsRouteImport } from './routes/admin.incidents'
+import { Route as AdminHeatmapRouteImport } from './routes/admin.heatmap'
+import { Route as AdminEmergencyRouteImport } from './routes/admin.emergency'
+import { Route as AdminCrowdRouteImport } from './routes/admin.crowd'
+import { Route as AdminAiRouteImport } from './routes/admin.ai'
 
 const FanRoute = FanRouteImport.update({
   id: '/fan',
   path: '/fan',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -33,6 +46,11 @@ const FanIndexRoute = FanIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => FanRoute,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
 } as any)
 const FanMatchRoute = FanMatchRouteImport.update({
   id: '/match',
@@ -64,77 +82,154 @@ const FanAccessibilityRoute = FanAccessibilityRouteImport.update({
   path: '/accessibility',
   getParentRoute: () => FanRoute,
 } as any)
+const AdminQueuesRoute = AdminQueuesRouteImport.update({
+  id: '/queues',
+  path: '/queues',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminIncidentsRoute = AdminIncidentsRouteImport.update({
+  id: '/incidents',
+  path: '/incidents',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminHeatmapRoute = AdminHeatmapRouteImport.update({
+  id: '/heatmap',
+  path: '/heatmap',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminEmergencyRoute = AdminEmergencyRouteImport.update({
+  id: '/emergency',
+  path: '/emergency',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminCrowdRoute = AdminCrowdRouteImport.update({
+  id: '/crowd',
+  path: '/crowd',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAiRoute = AdminAiRouteImport.update({
+  id: '/ai',
+  path: '/ai',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
   '/fan': typeof FanRouteWithChildren
+  '/admin/ai': typeof AdminAiRoute
+  '/admin/crowd': typeof AdminCrowdRoute
+  '/admin/emergency': typeof AdminEmergencyRoute
+  '/admin/heatmap': typeof AdminHeatmapRoute
+  '/admin/incidents': typeof AdminIncidentsRoute
+  '/admin/queues': typeof AdminQueuesRoute
   '/fan/accessibility': typeof FanAccessibilityRoute
   '/fan/crowd': typeof FanCrowdRoute
   '/fan/emergency': typeof FanEmergencyRoute
   '/fan/food': typeof FanFoodRoute
   '/fan/map': typeof FanMapRoute
   '/fan/match': typeof FanMatchRoute
+  '/admin/': typeof AdminIndexRoute
   '/fan/': typeof FanIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin/ai': typeof AdminAiRoute
+  '/admin/crowd': typeof AdminCrowdRoute
+  '/admin/emergency': typeof AdminEmergencyRoute
+  '/admin/heatmap': typeof AdminHeatmapRoute
+  '/admin/incidents': typeof AdminIncidentsRoute
+  '/admin/queues': typeof AdminQueuesRoute
   '/fan/accessibility': typeof FanAccessibilityRoute
   '/fan/crowd': typeof FanCrowdRoute
   '/fan/emergency': typeof FanEmergencyRoute
   '/fan/food': typeof FanFoodRoute
   '/fan/map': typeof FanMapRoute
   '/fan/match': typeof FanMatchRoute
+  '/admin': typeof AdminIndexRoute
   '/fan': typeof FanIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
   '/fan': typeof FanRouteWithChildren
+  '/admin/ai': typeof AdminAiRoute
+  '/admin/crowd': typeof AdminCrowdRoute
+  '/admin/emergency': typeof AdminEmergencyRoute
+  '/admin/heatmap': typeof AdminHeatmapRoute
+  '/admin/incidents': typeof AdminIncidentsRoute
+  '/admin/queues': typeof AdminQueuesRoute
   '/fan/accessibility': typeof FanAccessibilityRoute
   '/fan/crowd': typeof FanCrowdRoute
   '/fan/emergency': typeof FanEmergencyRoute
   '/fan/food': typeof FanFoodRoute
   '/fan/map': typeof FanMapRoute
   '/fan/match': typeof FanMatchRoute
+  '/admin/': typeof AdminIndexRoute
   '/fan/': typeof FanIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/fan'
+    | '/admin/ai'
+    | '/admin/crowd'
+    | '/admin/emergency'
+    | '/admin/heatmap'
+    | '/admin/incidents'
+    | '/admin/queues'
     | '/fan/accessibility'
     | '/fan/crowd'
     | '/fan/emergency'
     | '/fan/food'
     | '/fan/map'
     | '/fan/match'
+    | '/admin/'
     | '/fan/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin/ai'
+    | '/admin/crowd'
+    | '/admin/emergency'
+    | '/admin/heatmap'
+    | '/admin/incidents'
+    | '/admin/queues'
     | '/fan/accessibility'
     | '/fan/crowd'
     | '/fan/emergency'
     | '/fan/food'
     | '/fan/map'
     | '/fan/match'
+    | '/admin'
     | '/fan'
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/fan'
+    | '/admin/ai'
+    | '/admin/crowd'
+    | '/admin/emergency'
+    | '/admin/heatmap'
+    | '/admin/incidents'
+    | '/admin/queues'
     | '/fan/accessibility'
     | '/fan/crowd'
     | '/fan/emergency'
     | '/fan/food'
     | '/fan/map'
     | '/fan/match'
+    | '/admin/'
     | '/fan/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRouteWithChildren
   FanRoute: typeof FanRouteWithChildren
 }
 
@@ -145,6 +240,13 @@ declare module '@tanstack/react-router' {
       path: '/fan'
       fullPath: '/fan'
       preLoaderRoute: typeof FanRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -160,6 +262,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/fan/'
       preLoaderRoute: typeof FanIndexRouteImport
       parentRoute: typeof FanRoute
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/fan/match': {
       id: '/fan/match'
@@ -203,8 +312,72 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FanAccessibilityRouteImport
       parentRoute: typeof FanRoute
     }
+    '/admin/queues': {
+      id: '/admin/queues'
+      path: '/queues'
+      fullPath: '/admin/queues'
+      preLoaderRoute: typeof AdminQueuesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/incidents': {
+      id: '/admin/incidents'
+      path: '/incidents'
+      fullPath: '/admin/incidents'
+      preLoaderRoute: typeof AdminIncidentsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/heatmap': {
+      id: '/admin/heatmap'
+      path: '/heatmap'
+      fullPath: '/admin/heatmap'
+      preLoaderRoute: typeof AdminHeatmapRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/emergency': {
+      id: '/admin/emergency'
+      path: '/emergency'
+      fullPath: '/admin/emergency'
+      preLoaderRoute: typeof AdminEmergencyRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/crowd': {
+      id: '/admin/crowd'
+      path: '/crowd'
+      fullPath: '/admin/crowd'
+      preLoaderRoute: typeof AdminCrowdRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/ai': {
+      id: '/admin/ai'
+      path: '/ai'
+      fullPath: '/admin/ai'
+      preLoaderRoute: typeof AdminAiRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
+
+interface AdminRouteChildren {
+  AdminAiRoute: typeof AdminAiRoute
+  AdminCrowdRoute: typeof AdminCrowdRoute
+  AdminEmergencyRoute: typeof AdminEmergencyRoute
+  AdminHeatmapRoute: typeof AdminHeatmapRoute
+  AdminIncidentsRoute: typeof AdminIncidentsRoute
+  AdminQueuesRoute: typeof AdminQueuesRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminAiRoute: AdminAiRoute,
+  AdminCrowdRoute: AdminCrowdRoute,
+  AdminEmergencyRoute: AdminEmergencyRoute,
+  AdminHeatmapRoute: AdminHeatmapRoute,
+  AdminIncidentsRoute: AdminIncidentsRoute,
+  AdminQueuesRoute: AdminQueuesRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 interface FanRouteChildren {
   FanAccessibilityRoute: typeof FanAccessibilityRoute
@@ -230,6 +403,7 @@ const FanRouteWithChildren = FanRoute._addFileChildren(FanRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRouteWithChildren,
   FanRoute: FanRouteWithChildren,
 }
 export const routeTree = rootRouteImport
