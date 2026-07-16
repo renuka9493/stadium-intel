@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PortalShell } from "@/components/portal-shell";
 import { useLiveStadium } from "@/lib/live-stadium";
 import { useIncidents } from "@/lib/incidents-store";
-import { Panel, Kpi, LiveTag, Field, PriorityChip, chartTheme, MiniBar } from "@/components/ops";
+import { Panel, Kpi, LiveTag, chartTheme } from "@/components/ops";
 import {
   Activity,
   AlertTriangle,
