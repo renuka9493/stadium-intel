@@ -77,10 +77,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Stadium Brain — AI Command Center for World Cup Stadiums" },
+      {
+        name: "description",
+        content:
+          "AI-powered command center orchestrating fan experience, crowd flow, safety and operations for FIFA World Cup stadiums.",
+      },
+      { property: "og:title", content: "Stadium Brain" },
+      {
+        property: "og:description",
+        content: "The AI command center for World Cup stadium operations.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },
