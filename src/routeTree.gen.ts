@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as FanRouteImport } from './routes/fan'
 import { Route as AdminRouteImport } from './routes/admin'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as FanIndexRouteImport } from './routes/fan.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as FanReportRouteImport } from './routes/fan.report'
@@ -41,6 +42,11 @@ const FanRoute = FanRouteImport.update({
 const AdminRoute = AdminRouteImport.update({
   id: '/admin',
   path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FanIndexRoute = FanIndexRouteImport.update({
@@ -150,6 +156,7 @@ const AdminActivityRoute = AdminActivityRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/fan': typeof FanRouteWithChildren
   '/admin/activity': typeof AdminActivityRoute
@@ -175,6 +182,7 @@ export interface FileRoutesByFullPath {
   '/fan/': typeof FanIndexRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
   '/admin/activity': typeof AdminActivityRoute
   '/admin/ai': typeof AdminAiRoute
   '/admin/case': typeof AdminCaseRoute
@@ -199,6 +207,7 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/fan': typeof FanRouteWithChildren
   '/admin/activity': typeof AdminActivityRoute
@@ -226,6 +235,7 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
     | '/admin'
     | '/fan'
     | '/admin/activity'
@@ -251,6 +261,7 @@ export interface FileRouteTypes {
     | '/fan/'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/'
     | '/admin/activity'
     | '/admin/ai'
     | '/admin/case'
@@ -274,6 +285,7 @@ export interface FileRouteTypes {
     | '/fan'
   id:
     | '__root__'
+    | '/'
     | '/admin'
     | '/fan'
     | '/admin/activity'
@@ -300,6 +312,7 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRouteWithChildren
   FanRoute: typeof FanRouteWithChildren
 }
@@ -318,6 +331,13 @@ declare module '@tanstack/react-router' {
       path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/fan/': {
@@ -529,6 +549,7 @@ const FanRouteChildren: FanRouteChildren = {
 const FanRouteWithChildren = FanRoute._addFileChildren(FanRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
   FanRoute: FanRouteWithChildren,
 }
