@@ -14,6 +14,7 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as FanIndexRouteImport } from './routes/fan.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as FanReportRouteImport } from './routes/fan.report'
 import { Route as FanMatchRouteImport } from './routes/fan.match'
 import { Route as FanMapRouteImport } from './routes/fan.map'
 import { Route as FanJourneyRouteImport } from './routes/fan.journey'
@@ -56,6 +57,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AdminRoute,
+} as any)
+const FanReportRoute = FanReportRouteImport.update({
+  id: '/report',
+  path: '/report',
+  getParentRoute: () => FanRoute,
 } as any)
 const FanMatchRoute = FanMatchRouteImport.update({
   id: '/match',
@@ -164,6 +170,7 @@ export interface FileRoutesByFullPath {
   '/fan/journey': typeof FanJourneyRoute
   '/fan/map': typeof FanMapRoute
   '/fan/match': typeof FanMatchRoute
+  '/fan/report': typeof FanReportRoute
   '/admin/': typeof AdminIndexRoute
   '/fan/': typeof FanIndexRoute
 }
@@ -186,6 +193,7 @@ export interface FileRoutesByTo {
   '/fan/journey': typeof FanJourneyRoute
   '/fan/map': typeof FanMapRoute
   '/fan/match': typeof FanMatchRoute
+  '/fan/report': typeof FanReportRoute
   '/admin': typeof AdminIndexRoute
   '/fan': typeof FanIndexRoute
 }
@@ -211,6 +219,7 @@ export interface FileRoutesById {
   '/fan/journey': typeof FanJourneyRoute
   '/fan/map': typeof FanMapRoute
   '/fan/match': typeof FanMatchRoute
+  '/fan/report': typeof FanReportRoute
   '/admin/': typeof AdminIndexRoute
   '/fan/': typeof FanIndexRoute
 }
@@ -237,6 +246,7 @@ export interface FileRouteTypes {
     | '/fan/journey'
     | '/fan/map'
     | '/fan/match'
+    | '/fan/report'
     | '/admin/'
     | '/fan/'
   fileRoutesByTo: FileRoutesByTo
@@ -259,6 +269,7 @@ export interface FileRouteTypes {
     | '/fan/journey'
     | '/fan/map'
     | '/fan/match'
+    | '/fan/report'
     | '/admin'
     | '/fan'
   id:
@@ -283,6 +294,7 @@ export interface FileRouteTypes {
     | '/fan/journey'
     | '/fan/map'
     | '/fan/match'
+    | '/fan/report'
     | '/admin/'
     | '/fan/'
   fileRoutesById: FileRoutesById
@@ -329,6 +341,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
+    }
+    '/fan/report': {
+      id: '/fan/report'
+      path: '/report'
+      fullPath: '/fan/report'
+      preLoaderRoute: typeof FanReportRouteImport
+      parentRoute: typeof FanRoute
     }
     '/fan/match': {
       id: '/fan/match'
@@ -490,6 +509,7 @@ interface FanRouteChildren {
   FanJourneyRoute: typeof FanJourneyRoute
   FanMapRoute: typeof FanMapRoute
   FanMatchRoute: typeof FanMatchRoute
+  FanReportRoute: typeof FanReportRoute
   FanIndexRoute: typeof FanIndexRoute
 }
 
@@ -501,6 +521,7 @@ const FanRouteChildren: FanRouteChildren = {
   FanJourneyRoute: FanJourneyRoute,
   FanMapRoute: FanMapRoute,
   FanMatchRoute: FanMatchRoute,
+  FanReportRoute: FanReportRoute,
   FanIndexRoute: FanIndexRoute,
 }
 
