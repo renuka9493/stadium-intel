@@ -70,11 +70,11 @@ Write it as if delivered to stadium management the morning after the match.
 Be specific, confident, and professional. Numbers should feel realistic.
 `.trim();
 
-    const { experimental_output } = await generateText({
+    const { output } = await generateText({
       model: gateway("google/gemini-3-flash-preview"),
-      experimental_output: Output.object({ schema: ReportSchema }),
+      output: Output.object({ schema: ReportSchema }),
       prompt: context,
     });
 
-    return experimental_output;
+    return output;
   });
