@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { PageHeader } from "@/components/portal-shell";
 import { LiveBadge } from "@/components/live-badge";
 import { useLiveStadium } from "@/lib/live-stadium";
+import { Panel, LiveTag, PriorityChip, Field, MiniBar, StatMini } from "@/components/ops";
 import {
   AlertTriangle,
   Ambulance,
@@ -23,24 +23,9 @@ export const Route = createFileRoute("/admin/mission")({
 type Tone = "safe" | "warning" | "critical";
 
 const toneClasses: Record<Tone, { bg: string; text: string; ring: string; dot: string }> = {
-  safe: {
-    bg: "bg-accent/15",
-    text: "text-accent",
-    ring: "ring-accent/30",
-    dot: "bg-accent",
-  },
-  warning: {
-    bg: "bg-chart-3/15",
-    text: "text-chart-3",
-    ring: "ring-chart-3/30",
-    dot: "bg-chart-3",
-  },
-  critical: {
-    bg: "bg-destructive/15",
-    text: "text-destructive",
-    ring: "ring-destructive/40",
-    dot: "bg-destructive",
-  },
+  safe: { bg: "bg-success/12", text: "text-success", ring: "ring-success/30", dot: "bg-success" },
+  warning: { bg: "bg-warning/12", text: "text-warning", ring: "ring-warning/30", dot: "bg-warning" },
+  critical: { bg: "bg-critical/12", text: "text-critical", ring: "ring-critical/30", dot: "bg-critical" },
 };
 
 type Metric = {
@@ -192,40 +177,34 @@ function StatusBanner({ metrics }: { metrics: Metric[] }) {
       ? "warning"
       : "safe";
   const tone: Tone = worst;
-  const label =
-    tone === "critical"
-      ? "Critical · Immediate action"
-      : tone === "warning"
-        ? "Warning · Elevated pressure"
-        : "Safe · All systems nominal";
+  const label = tone === "critical" ? "Critical" : tone === "warning" ? "Warning" : "Nominal";
   const styles = toneClasses[tone];
+  const counts = {
+    safe: metrics.filter((m) => m.tone === "safe").length,
+    warning: metrics.filter((m) => m.tone === "warning").length,
+    critical: metrics.filter((m) => m.tone === "critical").length,
+  };
   return (
-    <div
-      className={`mb-6 grid gap-4 rounded-2xl border border-border/60 p-5 shadow-card sm:grid-cols-[auto_1fr_auto] sm:items-center ${styles.bg} ring-1 ${styles.ring}`}
-    >
-      <span className={`grid h-14 w-14 place-items-center rounded-xl ${styles.bg} ${styles.text}`}>
-        <Gauge className="h-7 w-7" />
+    <div className={`mb-3 grid grid-cols-[auto_1fr_auto] items-center gap-3 rounded-[10px] border border-border bg-card px-3 py-2 shadow-card ring-1 ${styles.ring}`}>
+      <span className={`grid h-8 w-8 place-items-center rounded-md ${styles.bg} ${styles.text} ring-1 ${styles.ring}`}>
+        <Gauge className="h-4 w-4" />
       </span>
       <div className="min-w-0">
-        <div className="text-xs uppercase tracking-widest text-muted-foreground">Overall Stadium Status</div>
-        <div className={`mt-1 flex items-center gap-2 text-2xl font-bold ${styles.text}`}>
-          <span className={`h-2.5 w-2.5 rounded-full ${styles.dot} pulse-dot`} />
-          {label}
+        <div className="flex items-center gap-2">
+          <span className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground">Stadium Status</span>
+          <span className={`inline-flex items-center gap-1 text-[12px] font-semibold ${styles.text}`}>
+            <span className={`h-1.5 w-1.5 rounded-full ${styles.dot} pulse-dot`} />
+            {label}
+          </span>
         </div>
-        <p className="text-sm text-muted-foreground">
-          Ingress load and Gate C occupancy require attention. AI Commander is generating live actions.
-        </p>
+        <div className="mt-0.5 text-[10.5px] text-muted-foreground truncate">
+          {metrics.length} channels monitored · AI Commander active
+        </div>
       </div>
-      <div className="flex flex-wrap gap-2">
-        <span className="rounded-full bg-accent/20 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-accent">
-          Safe
-        </span>
-        <span className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-widest ${styles.bg} ${styles.text}`}>
-          Warning
-        </span>
-        <span className="rounded-full bg-destructive/20 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-destructive">
-          Critical
-        </span>
+      <div className="hidden items-center gap-2 text-[10px] uppercase tracking-[0.14em] sm:flex">
+        <span className="rounded-sm bg-success/10 px-1.5 py-0.5 text-success ring-1 ring-success/30 tabular-nums">{counts.safe} safe</span>
+        <span className="rounded-sm bg-warning/10 px-1.5 py-0.5 text-warning ring-1 ring-warning/30 tabular-nums">{counts.warning} warn</span>
+        <span className="rounded-sm bg-critical/10 px-1.5 py-0.5 text-critical ring-1 ring-critical/30 tabular-nums">{counts.critical} crit</span>
       </div>
     </div>
   );
@@ -234,23 +213,22 @@ function StatusBanner({ metrics }: { metrics: Metric[] }) {
 function MetricCard({ metric }: { metric: Metric }) {
   const styles = toneClasses[metric.tone];
   return (
-    <div className="rounded-2xl border border-border/60 bg-card p-5 shadow-card transition-all duration-500">
-      <div className="flex items-start justify-between gap-3">
-        <span className={`grid h-10 w-10 place-items-center rounded-lg ${styles.bg} ${styles.text} ring-1 ${styles.ring}`}>
-          <metric.icon className="h-5 w-5" />
-        </span>
-        <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-widest ${styles.bg} ${styles.text}`}>
-          {metric.tone}
-        </span>
+    <div className="rounded-[10px] border border-border bg-card p-3 shadow-card">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <span className={`grid h-6 w-6 place-items-center rounded-md ${styles.bg} ${styles.text} ring-1 ${styles.ring}`}>
+            <metric.icon className="h-3 w-3" />
+          </span>
+          <span className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">{metric.label}</span>
+        </div>
+        <span className={`text-[9px] font-semibold uppercase tracking-[0.14em] ${styles.text}`}>{metric.tone}</span>
       </div>
-      <div className="mt-4 text-xs uppercase tracking-widest text-muted-foreground">{metric.label}</div>
-      <div className="mt-1 text-2xl font-bold tabular-nums transition-all duration-500">{metric.value}</div>
-      <div className="mt-1 text-xs text-muted-foreground">{metric.detail}</div>
-      <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-secondary">
-        <div
-          className={`h-full rounded-full ${styles.dot} transition-all duration-700 ease-out`}
-          style={{ width: `${metric.progress}%` }}
-        />
+      <div className="mt-2 flex items-baseline gap-1.5">
+        <span className="text-[20px] font-semibold tabular-nums leading-none">{metric.value}</span>
+      </div>
+      <div className="mt-1 truncate text-[10.5px] text-muted-foreground">{metric.detail}</div>
+      <div className="mt-2">
+        <MiniBar value={metric.progress} tone={metric.tone === "safe" ? "success" : metric.tone === "warning" ? "warning" : "critical"} />
       </div>
     </div>
   );
@@ -258,101 +236,82 @@ function MetricCard({ metric }: { metric: Metric }) {
 
 function RecommendationCard({ rec }: { rec: Recommendation }) {
   return (
-    <div className="rounded-2xl border border-border/60 bg-card p-4 shadow-card">
-      <div className="flex items-center justify-between gap-2">
-        <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest ${priorityStyles[rec.priority]}`}>
-          {rec.priority}
-        </span>
-        <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-widest text-muted-foreground">
-          <Sparkles className="h-3 w-3" /> AI
-        </span>
+    <article className="rounded-[8px] border border-border bg-background p-2.5">
+      <div className="flex items-center justify-between">
+        <PriorityChip p={rec.priority} />
+        <span className="text-[10px] tabular-nums text-muted-foreground">Conf {rec.confidence}%</span>
       </div>
-      <div className="mt-3 space-y-3 text-xs">
-        <div>
-          <div className="text-[10px] uppercase tracking-widest text-muted-foreground">Problem detected</div>
-          <p className="mt-0.5 text-sm font-semibold text-foreground">{rec.problem}</p>
-        </div>
-        <div>
-          <div className="text-[10px] uppercase tracking-widest text-muted-foreground">Reasoning</div>
-          <p className="mt-0.5 text-foreground/80">{rec.reasoning}</p>
-        </div>
-        <div>
-          <div className="text-[10px] uppercase tracking-widest text-muted-foreground">Recommended action</div>
-          <p className="mt-0.5 text-foreground/90">{rec.action}</p>
-        </div>
-        <div>
-          <div className="text-[10px] uppercase tracking-widest text-muted-foreground">Estimated improvement</div>
-          <p className="mt-0.5 text-accent">{rec.improvement}</p>
-        </div>
-        <div>
-          <div className="flex items-center justify-between text-[10px] uppercase tracking-widest text-muted-foreground">
-            <span>Confidence</span>
-            <span className="tabular-nums text-foreground">{rec.confidence}%</span>
-          </div>
-          <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-secondary">
-            <div
-              className="h-full rounded-full bg-gradient-accent"
-              style={{ width: `${rec.confidence}%` }}
-            />
-          </div>
-        </div>
+      <div className="mt-2 space-y-1.5">
+        <Field label="Problem" value={rec.problem} />
+        <Field label="Reasoning" value={rec.reasoning} />
+        <Field label="Action" value={rec.action} tone="accent" />
+        <Field label="Impact" value={rec.improvement} tone="success" />
       </div>
-      <div className="mt-3 flex items-center gap-2">
-        <button className="flex-1 rounded-lg bg-gradient-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground shadow-glow">
-          Apply
-        </button>
-        <button className="rounded-lg border border-border/60 bg-secondary px-3 py-1.5 text-xs">
-          Dismiss
-        </button>
+      <div className="mt-2 h-0.5 w-full overflow-hidden rounded-full bg-secondary">
+        <div className="h-full rounded-full bg-primary transition-all duration-500" style={{ width: `${rec.confidence}%` }} />
       </div>
-    </div>
+      <div className="mt-2 flex items-center justify-end gap-1.5">
+        <button className="rounded-[6px] border border-border bg-background px-2 py-1 text-[10px] font-medium text-muted-foreground hover:text-foreground">Dismiss</button>
+        <button className="rounded-[6px] bg-primary px-2.5 py-1 text-[10px] font-semibold text-primary-foreground hover:brightness-110">Apply</button>
+      </div>
+    </article>
   );
 }
 
 function MissionControl() {
   const metrics = useLiveMetrics();
+  const s = useLiveStadium();
   return (
     <div>
-      <PageHeader
-        title="Mission Control"
-        description="Central AI command center — live telemetry across every stadium system."
-      >
-        <LiveBadge />
-      </PageHeader>
-      <StatusBanner metrics={metrics} />
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-          {metrics.map((m) => (
-            <MetricCard key={m.label} metric={m} />
-          ))}
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-2 border-b border-border pb-2">
+        <div className="flex min-w-0 items-baseline gap-2.5">
+          <h1 className="truncate text-[13px] font-semibold tracking-tight">Mission Control</h1>
+          <p className="hidden text-[10.5px] uppercase tracking-[0.14em] text-muted-foreground sm:block">
+            Central AI command center · live telemetry
+          </p>
         </div>
-        <aside className="rounded-2xl border border-primary/30 bg-card p-5 shadow-card ring-1 ring-primary/20">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <span className="grid h-9 w-9 place-items-center rounded-lg bg-gradient-primary text-primary-foreground shadow-glow">
-                <Sparkles className="h-4 w-4" />
-              </span>
-              <div>
-                <div className="text-sm font-bold">AI Commander</div>
-                <div className="text-[10px] uppercase tracking-widest text-muted-foreground">
-                  Continuously analyzing
-                </div>
-              </div>
+        <LiveBadge />
+      </div>
+      <StatusBanner metrics={metrics} />
+
+      <div className="grid gap-2 xl:grid-cols-[minmax(0,1fr)_320px]">
+        <div className="space-y-2">
+          <div className="grid grid-cols-2 gap-2 md:grid-cols-3 xl:grid-cols-4">
+            {metrics.map((m) => (
+              <MetricCard key={m.label} metric={m} />
+            ))}
+          </div>
+
+          <Panel title="Zone Load" subtitle="Live percentage by zone" right={<LiveTag />}>
+            <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
+              <StatMini label="North" value={`${Math.round(s.crowdDensity * 0.98)}%`} hint="+1.2%" />
+              <StatMini label="South" value={`${Math.round(s.crowdDensity * 0.86)}%`} hint="-0.4%" />
+              <StatMini label="East" value={`${Math.round(s.crowdDensity * 1.12)}%`} hint="+3.1%" tone="warning" />
+              <StatMini label="West" value={`${Math.round(s.crowdDensity * 0.92)}%`} hint="+0.6%" />
             </div>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-accent/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-widest text-accent">
-              <span className="h-1.5 w-1.5 rounded-full bg-accent pulse-dot" /> Live
-            </span>
+          </Panel>
+        </div>
+
+        <Panel
+          title="AI Commander"
+          subtitle="Continuous decision support"
+          right={
+            <>
+              <span className="text-[10px] tabular-nums text-muted-foreground">{recommendations.length} active</span>
+              <LiveTag />
+            </>
+          }
+        >
+          <div className="mb-2 flex items-center gap-1.5 rounded-[6px] border border-border bg-background px-2 py-1 text-[10.5px] text-muted-foreground">
+            <Sparkles className="h-3 w-3 text-primary" />
+            Analysis cycle 4s · Gemini grounded in live snapshot
           </div>
-          <div className="mt-4 flex items-center gap-2 rounded-lg bg-secondary/60 p-2 text-xs text-muted-foreground">
-            <AlertTriangle className="h-3.5 w-3.5 text-chart-3" />
-            {recommendations.length} recommendations · updated 4s ago
-          </div>
-          <div className="mt-4 space-y-3">
+          <div className="space-y-2">
             {recommendations.map((r, i) => (
               <RecommendationCard key={i} rec={r} />
             ))}
           </div>
-        </aside>
+        </Panel>
       </div>
     </div>
   );

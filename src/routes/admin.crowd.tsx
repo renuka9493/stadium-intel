@@ -1,6 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "@/components/portal-shell";
 import { Line, LineChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis, Legend } from "recharts";
+import { Panel, LiveTag, StatMini, chartTheme } from "@/components/ops";
+import { useLiveStadium } from "@/lib/live-stadium";
+import { Camera, Focus } from "lucide-react";
 
 export const Route = createFileRoute("/admin/crowd")({
   component: AdminCrowd,
@@ -15,64 +18,109 @@ const data = Array.from({ length: 24 }).map((_, i) => ({
 }));
 
 const cams = [
-  { id: "CAM-01", zone: "Gate B", state: "OK" },
-  { id: "CAM-02", zone: "Concourse 2", state: "OK" },
-  { id: "CAM-03", zone: "Food Court", state: "ALERT" },
-  { id: "CAM-04", zone: "Sec 118", state: "OK" },
-  { id: "CAM-05", zone: "Exit E", state: "WARN" },
-  { id: "CAM-06", zone: "VIP Lounge", state: "OK" },
+  { id: "CAM-01", zone: "Gate B", state: "OK", people: 142 },
+  { id: "CAM-02", zone: "Concourse 2", state: "OK", people: 88 },
+  { id: "CAM-03", zone: "Food Court", state: "ALERT", people: 312 },
+  { id: "CAM-04", zone: "Sec 118", state: "OK", people: 204 },
+  { id: "CAM-05", zone: "Exit E", state: "WARN", people: 176 },
+  { id: "CAM-06", zone: "VIP Lounge", state: "OK", people: 34 },
+  { id: "CAM-07", zone: "Gate A", state: "OK", people: 96 },
+  { id: "CAM-08", zone: "Turnstile B4", state: "WARN", people: 158 },
 ];
 
 function AdminCrowd() {
+  const live = useLiveStadium();
   return (
     <div>
-      <PageHeader title="Crowd Monitoring" description="Multi-zone density stream, refreshed every 3 seconds." />
-      <div className="rounded-2xl border border-border/60 bg-card p-5 shadow-card">
-        <ResponsiveContainer width="100%" height={300}>
-          <LineChart data={data}>
-            <CartesianGrid strokeDasharray="3 3" stroke="oklch(1 0 0 / 0.05)" />
-            <XAxis dataKey="t" stroke="oklch(0.72 0.02 250)" fontSize={11} />
-            <YAxis stroke="oklch(0.72 0.02 250)" fontSize={11} />
-            <Tooltip contentStyle={{ background: "oklch(0.21 0.035 250)", border: "1px solid oklch(1 0 0 / 0.1)", borderRadius: 8 }} />
-            <Legend />
-            <Line type="monotone" dataKey="north" stroke="oklch(0.68 0.19 245)" strokeWidth={2} dot={false} />
-            <Line type="monotone" dataKey="south" stroke="oklch(0.72 0.19 155)" strokeWidth={2} dot={false} />
-            <Line type="monotone" dataKey="east" stroke="oklch(0.82 0.14 90)" strokeWidth={2} dot={false} />
-            <Line type="monotone" dataKey="west" stroke="oklch(0.65 0.24 25)" strokeWidth={2} dot={false} />
-          </LineChart>
-        </ResponsiveContainer>
+      <PageHeader title="Crowd Analytics" description={`4 zones · 8 cameras · refresh 3s`}>
+        <LiveTag />
+      </PageHeader>
+
+      <div className="mb-2 grid grid-cols-2 gap-2 md:grid-cols-4">
+        <StatMini label="Overall density" value={`${Math.round(live.crowdDensity)}%`} hint="target <75%" tone={live.crowdDensity > 85 ? "critical" : live.crowdDensity > 70 ? "warning" : "success"} />
+        <StatMini label="Peak zone" value="East" hint={`${Math.round(live.crowdDensity * 1.12)}%`} tone="warning" />
+        <StatMini label="Cameras online" value="8 / 8" tone="success" />
+        <StatMini label="Alerts" value={cams.filter((c) => c.state !== "OK").length} tone="warning" />
       </div>
-      <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {cams.map((c) => (
-          <div key={c.id} className="overflow-hidden rounded-2xl border border-border/60 bg-card shadow-card">
-            <div
-              className="relative aspect-video"
-              style={{
-                background:
-                  "repeating-linear-gradient(45deg, oklch(0.24 0.04 250) 0 8px, oklch(0.2 0.03 250) 8px 16px)",
-              }}
-            >
-              <span className="absolute left-2 top-2 rounded bg-background/70 px-1.5 py-0.5 text-[10px] font-semibold tracking-widest">
-                {c.id}
-              </span>
-              <span
-                className={`absolute right-2 top-2 rounded px-1.5 py-0.5 text-[10px] font-semibold ${
-                  c.state === "ALERT"
-                    ? "bg-destructive/80 text-destructive-foreground"
-                    : c.state === "WARN"
-                      ? "bg-chart-3/80 text-primary-foreground"
-                      : "bg-accent/80 text-primary-foreground"
-                }`}
-              >
-                {c.state}
-              </span>
-            </div>
-            <div className="flex items-center justify-between p-3 text-sm">
-              <span className="font-medium">{c.zone}</span>
-              <button className="text-xs text-primary hover:underline">Focus</button>
-            </div>
+
+      <div className="grid gap-2 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
+        <Panel title="Zone density" subtitle="Last 24 minutes · 4 quadrants" right={<LiveTag />}>
+          <div className="h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={data} margin={{ top: 5, right: 6, left: -20, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="2 4" stroke={chartTheme.grid} vertical={false} />
+                <XAxis dataKey="t" stroke={chartTheme.axis} fontSize={10} tickLine={false} axisLine={false} />
+                <YAxis stroke={chartTheme.axis} fontSize={10} tickLine={false} axisLine={false} />
+                <Tooltip contentStyle={chartTheme.tooltipStyle} labelStyle={chartTheme.tooltipLabelStyle} />
+                <Legend wrapperStyle={{ fontSize: 10, paddingTop: 4 }} />
+                <Line type="monotone" dataKey="north" stroke={chartTheme.primary} strokeWidth={1.5} dot={false} />
+                <Line type="monotone" dataKey="south" stroke={chartTheme.success} strokeWidth={1.5} dot={false} />
+                <Line type="monotone" dataKey="east" stroke={chartTheme.warning} strokeWidth={1.5} dot={false} />
+                <Line type="monotone" dataKey="west" stroke={chartTheme.info} strokeWidth={1.5} dot={false} />
+              </LineChart>
+            </ResponsiveContainer>
           </div>
-        ))}
+        </Panel>
+
+        <Panel title="Density by zone" subtitle="Instantaneous">
+          <ul className="space-y-1.5">
+            {[
+              { name: "North", v: Math.round(live.crowdDensity * 0.98) },
+              { name: "South", v: Math.round(live.crowdDensity * 0.86) },
+              { name: "East", v: Math.round(live.crowdDensity * 1.12) },
+              { name: "West", v: Math.round(live.crowdDensity * 0.92) },
+            ].map((z) => {
+              const tone = z.v > 85 ? "#EF4444" : z.v > 70 ? "#F59E0B" : "#22C55E";
+              return (
+                <li key={z.name} className="rounded-[6px] border border-border bg-background px-2 py-1.5">
+                  <div className="flex items-center justify-between text-[11.5px]">
+                    <span className="text-muted-foreground">{z.name}</span>
+                    <span className="tabular-nums font-medium">{z.v}%</span>
+                  </div>
+                  <div className="mt-1 h-1 w-full overflow-hidden rounded-full bg-secondary">
+                    <div className="h-full rounded-full transition-all duration-500" style={{ width: `${z.v}%`, background: tone }} />
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </Panel>
+      </div>
+
+      <div className="mt-2">
+        <Panel title="CCTV wall" subtitle="8 zones · computer vision" right={<LiveTag />}>
+          <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
+            {cams.map((c) => {
+              const state =
+                c.state === "ALERT"
+                  ? "bg-critical/20 text-critical ring-critical/40"
+                  : c.state === "WARN"
+                    ? "bg-warning/20 text-warning ring-warning/40"
+                    : "bg-success/20 text-success ring-success/40";
+              return (
+                <div key={c.id} className="overflow-hidden rounded-[8px] border border-border bg-background">
+                  <div className="relative aspect-video grid-lines">
+                    <span className="absolute left-1.5 top-1.5 inline-flex items-center gap-1 rounded-sm bg-card/80 px-1.5 py-0.5 text-[9px] font-mono uppercase tracking-[0.14em] text-muted-foreground ring-1 ring-border backdrop-blur">
+                      <Camera className="h-2.5 w-2.5" /> {c.id}
+                    </span>
+                    <span className={`absolute right-1.5 top-1.5 rounded-sm px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-[0.14em] ring-1 ${state}`}>
+                      {c.state}
+                    </span>
+                    <span className="absolute bottom-1.5 left-1.5 rounded-sm bg-card/80 px-1.5 py-0.5 text-[10px] font-mono tabular-nums text-foreground ring-1 ring-border backdrop-blur">
+                      {c.people}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between border-t border-border px-2 py-1 text-[11px]">
+                    <span className="truncate">{c.zone}</span>
+                    <button className="inline-flex items-center gap-1 text-[10px] text-primary hover:underline">
+                      <Focus className="h-2.5 w-2.5" /> Focus
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </Panel>
       </div>
     </div>
   );
