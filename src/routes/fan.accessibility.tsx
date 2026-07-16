@@ -20,7 +20,7 @@ function FanAccessibility() {
       <div className="grid gap-4 sm:grid-cols-2">
         {services.map((s) => (
           <div key={s.title} className="rounded-2xl border border-border/60 bg-card p-5 shadow-card">
-            <div className="mb-3 grid h-11 w-11 place-items-center rounded-xl bg-gradient-primary/20 text-primary ring-1 ring-primary/30">
+            <div className="mb-3 grid h-11 w-11 place-items-center rounded-xl bg-primary/15 text-primary ring-1 ring-primary/30">
               <s.icon className="h-5 w-5" />
             </div>
             <h3 className="text-base font-semibold">{s.title}</h3>

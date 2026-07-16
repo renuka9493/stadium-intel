@@ -110,7 +110,7 @@ function FanAssistant() {
               ))}
             </ul>
           </div>
-          <div className="rounded-2xl border border-border/60 bg-gradient-primary/10 p-5">
+          <div className="rounded-2xl border border-border/60 bg-primary/10 p-5">
             <div className="text-xs uppercase tracking-widest text-muted-foreground">Your seat</div>
             <div className="mt-1 text-2xl font-bold">Section 214 · Row B · Seat 12</div>
             <div className="mt-2 text-sm text-muted-foreground">Gate B opens at 18:30 · 4 min walk from you</div>

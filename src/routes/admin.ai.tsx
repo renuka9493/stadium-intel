@@ -23,7 +23,7 @@ function AdminAi() {
           <div key={r.title} className="rounded-2xl border border-border/60 bg-card p-5 shadow-card">
             <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4 sm:flex sm:items-center sm:justify-between">
               <div className="min-w-0 flex items-start gap-3">
-                <span className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-gradient-primary/20 text-primary ring-1 ring-primary/30">
+                <span className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-primary/15 text-primary ring-1 ring-primary/30">
                   <Sparkles className="h-4 w-4" />
                 </span>
                 <div className="min-w-0">

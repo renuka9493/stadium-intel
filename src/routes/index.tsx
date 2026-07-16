@@ -166,7 +166,7 @@ function Landing() {
               key={f.title}
               className="group rounded-2xl border border-border/60 bg-card p-6 shadow-card transition hover:-translate-y-1 hover:border-primary/40"
             >
-              <div className="mb-4 grid h-11 w-11 place-items-center rounded-xl bg-gradient-primary/20 text-primary ring-1 ring-primary/30">
+              <div className="mb-4 grid h-11 w-11 place-items-center rounded-xl bg-primary/15 text-primary ring-1 ring-primary/30">
                 <f.icon className="h-5 w-5" />
               </div>
               <h3 className="text-lg font-semibold">{f.title}</h3>
