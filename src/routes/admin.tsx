@@ -5,6 +5,7 @@ import {
   BarChart3,
   Flame,
   LayoutDashboard,
+  Radar,
   Siren,
   Sparkles,
   Users,
@@ -12,6 +13,7 @@ import {
 
 const items = [
   { title: "Dashboard", url: "/admin", icon: LayoutDashboard },
+  { title: "Mission Control", url: "/admin/mission", icon: Radar },
   { title: "Crowd Monitoring", url: "/admin/crowd", icon: Users },
   { title: "AI Recommendations", url: "/admin/ai", icon: Sparkles },
   { title: "Incident Reports", url: "/admin/incidents", icon: Activity },
