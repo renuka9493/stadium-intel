@@ -16,6 +16,7 @@ import { Route as FanIndexRouteImport } from './routes/fan.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as FanMatchRouteImport } from './routes/fan.match'
 import { Route as FanMapRouteImport } from './routes/fan.map'
+import { Route as FanJourneyRouteImport } from './routes/fan.journey'
 import { Route as FanFoodRouteImport } from './routes/fan.food'
 import { Route as FanEmergencyRouteImport } from './routes/fan.emergency'
 import { Route as FanCrowdRouteImport } from './routes/fan.crowd'
@@ -62,6 +63,11 @@ const FanMatchRoute = FanMatchRouteImport.update({
 const FanMapRoute = FanMapRouteImport.update({
   id: '/map',
   path: '/map',
+  getParentRoute: () => FanRoute,
+} as any)
+const FanJourneyRoute = FanJourneyRouteImport.update({
+  id: '/journey',
+  path: '/journey',
   getParentRoute: () => FanRoute,
 } as any)
 const FanFoodRoute = FanFoodRouteImport.update({
@@ -141,6 +147,7 @@ export interface FileRoutesByFullPath {
   '/fan/crowd': typeof FanCrowdRoute
   '/fan/emergency': typeof FanEmergencyRoute
   '/fan/food': typeof FanFoodRoute
+  '/fan/journey': typeof FanJourneyRoute
   '/fan/map': typeof FanMapRoute
   '/fan/match': typeof FanMatchRoute
   '/admin/': typeof AdminIndexRoute
@@ -160,6 +167,7 @@ export interface FileRoutesByTo {
   '/fan/crowd': typeof FanCrowdRoute
   '/fan/emergency': typeof FanEmergencyRoute
   '/fan/food': typeof FanFoodRoute
+  '/fan/journey': typeof FanJourneyRoute
   '/fan/map': typeof FanMapRoute
   '/fan/match': typeof FanMatchRoute
   '/admin': typeof AdminIndexRoute
@@ -182,6 +190,7 @@ export interface FileRoutesById {
   '/fan/crowd': typeof FanCrowdRoute
   '/fan/emergency': typeof FanEmergencyRoute
   '/fan/food': typeof FanFoodRoute
+  '/fan/journey': typeof FanJourneyRoute
   '/fan/map': typeof FanMapRoute
   '/fan/match': typeof FanMatchRoute
   '/admin/': typeof AdminIndexRoute
@@ -205,6 +214,7 @@ export interface FileRouteTypes {
     | '/fan/crowd'
     | '/fan/emergency'
     | '/fan/food'
+    | '/fan/journey'
     | '/fan/map'
     | '/fan/match'
     | '/admin/'
@@ -224,6 +234,7 @@ export interface FileRouteTypes {
     | '/fan/crowd'
     | '/fan/emergency'
     | '/fan/food'
+    | '/fan/journey'
     | '/fan/map'
     | '/fan/match'
     | '/admin'
@@ -245,6 +256,7 @@ export interface FileRouteTypes {
     | '/fan/crowd'
     | '/fan/emergency'
     | '/fan/food'
+    | '/fan/journey'
     | '/fan/map'
     | '/fan/match'
     | '/admin/'
@@ -306,6 +318,13 @@ declare module '@tanstack/react-router' {
       path: '/map'
       fullPath: '/fan/map'
       preLoaderRoute: typeof FanMapRouteImport
+      parentRoute: typeof FanRoute
+    }
+    '/fan/journey': {
+      id: '/fan/journey'
+      path: '/journey'
+      fullPath: '/fan/journey'
+      preLoaderRoute: typeof FanJourneyRouteImport
       parentRoute: typeof FanRoute
     }
     '/fan/food': {
@@ -426,6 +445,7 @@ interface FanRouteChildren {
   FanCrowdRoute: typeof FanCrowdRoute
   FanEmergencyRoute: typeof FanEmergencyRoute
   FanFoodRoute: typeof FanFoodRoute
+  FanJourneyRoute: typeof FanJourneyRoute
   FanMapRoute: typeof FanMapRoute
   FanMatchRoute: typeof FanMatchRoute
   FanIndexRoute: typeof FanIndexRoute
@@ -436,6 +456,7 @@ const FanRouteChildren: FanRouteChildren = {
   FanCrowdRoute: FanCrowdRoute,
   FanEmergencyRoute: FanEmergencyRoute,
   FanFoodRoute: FanFoodRoute,
+  FanJourneyRoute: FanJourneyRoute,
   FanMapRoute: FanMapRoute,
   FanMatchRoute: FanMatchRoute,
   FanIndexRoute: FanIndexRoute,
