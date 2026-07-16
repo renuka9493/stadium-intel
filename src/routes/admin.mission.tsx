@@ -119,41 +119,58 @@ const priorityStyles: Record<Priority, string> = {
 
 type Recommendation = {
   priority: Priority;
-  reason: string;
+  problem: string;
+  reasoning: string;
   action: string;
-  impact: string;
+  improvement: string;
+  confidence: number;
 };
 
 const recommendations: Recommendation[] = [
   {
     priority: "high",
-    reason: "Gate C is operating at 94% capacity.",
+    problem: "Gate C is operating at 94% capacity.",
+    reasoning:
+      "Ingress rate over the last 10 minutes combined with pre-match ticket scan data projects Gate C will hit 100% within 6 minutes.",
     action: "Open Gate D and redirect spectators arriving from the East entrance.",
-    impact: "Reduce waiting time by 18%.",
+    improvement: "Reduce waiting time by approximately 18%.",
+    confidence: 96,
   },
   {
     priority: "high",
-    reason: "Food Court queue at Concourse 2 exceeds 12 minutes.",
+    problem: "Food Court West has reached 91% occupancy.",
+    reasoning:
+      "Historical halftime data combined with current crowd movement indicates congestion will continue increasing.",
     action: "Deploy 2 additional attendants and open express lanes 4–5.",
-    impact: "Cut queue time by 6 minutes.",
+    improvement: "Queue time reduced by approximately 30%.",
+    confidence: 94,
   },
   {
     priority: "medium",
-    reason: "Parking Lot B is at 91% occupancy.",
+    problem: "Parking Lot B is at 91% occupancy.",
+    reasoning:
+      "Inbound vehicle flow from Highway 4 exceeds Lot B intake rate; Lot F is currently underutilized at 38%.",
     action: "Route inbound vehicles to Lot F and update wayfinding signage.",
-    impact: "Balance parking load by 22%.",
+    improvement: "Balance parking load by 22%.",
+    confidence: 88,
   },
   {
     priority: "medium",
-    reason: "Sections 214–220 report elevated temperature readings.",
+    problem: "Sections 214–220 report elevated temperature readings.",
+    reasoning:
+      "Ambient sensors show +4°C above target with direct sun exposure on upper east concourse through halftime.",
     action: "Increase cooling output by 15% in the upper east concourse.",
-    impact: "Improve comfort index by 12%.",
+    improvement: "Improve comfort index by 12%.",
+    confidence: 82,
   },
   {
     priority: "low",
-    reason: "Concourse 3 shows minor litter accumulation.",
+    problem: "Concourse 3 shows minor litter accumulation.",
+    reasoning:
+      "Computer vision on Camera CV-31 detects debris density trending 2.1× the pre-match baseline.",
     action: "Dispatch cleaning crew during the next play stoppage.",
-    impact: "Fan sentiment score up 6%.",
+    improvement: "Fan sentiment score up 6%.",
+    confidence: 74,
   },
 ];
 
@@ -228,15 +245,34 @@ function RecommendationCard({ rec }: { rec: Recommendation }) {
           <Sparkles className="h-3 w-3" /> AI
         </span>
       </div>
-      <p className="mt-3 text-sm font-semibold text-foreground">{rec.reason}</p>
-      <div className="mt-3 space-y-2 text-xs">
+      <div className="mt-3 space-y-3 text-xs">
         <div>
-          <div className="text-[10px] uppercase tracking-widest text-muted-foreground">Recommendation</div>
+          <div className="text-[10px] uppercase tracking-widest text-muted-foreground">Problem detected</div>
+          <p className="mt-0.5 text-sm font-semibold text-foreground">{rec.problem}</p>
+        </div>
+        <div>
+          <div className="text-[10px] uppercase tracking-widest text-muted-foreground">Reasoning</div>
+          <p className="mt-0.5 text-foreground/80">{rec.reasoning}</p>
+        </div>
+        <div>
+          <div className="text-[10px] uppercase tracking-widest text-muted-foreground">Recommended action</div>
           <p className="mt-0.5 text-foreground/90">{rec.action}</p>
         </div>
         <div>
-          <div className="text-[10px] uppercase tracking-widest text-muted-foreground">Expected impact</div>
-          <p className="mt-0.5 text-accent">{rec.impact}</p>
+          <div className="text-[10px] uppercase tracking-widest text-muted-foreground">Estimated improvement</div>
+          <p className="mt-0.5 text-accent">{rec.improvement}</p>
+        </div>
+        <div>
+          <div className="flex items-center justify-between text-[10px] uppercase tracking-widest text-muted-foreground">
+            <span>Confidence</span>
+            <span className="tabular-nums text-foreground">{rec.confidence}%</span>
+          </div>
+          <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-secondary">
+            <div
+              className="h-full rounded-full bg-gradient-accent"
+              style={{ width: `${rec.confidence}%` }}
+            />
+          </div>
         </div>
       </div>
       <div className="mt-3 flex items-center gap-2">
