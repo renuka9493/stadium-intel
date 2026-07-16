@@ -22,13 +22,6 @@ export const Route = createFileRoute("/admin/")({
   component: AdminDashboard,
 });
 
-const kpis = [
-  { label: "Attendance", value: "82,340", delta: "+2.4%", icon: Users, tone: "primary" },
-  { label: "Density Index", value: "0.62", delta: "-0.08", icon: Activity, tone: "accent" },
-  { label: "Open Incidents", value: "3", delta: "-1", icon: ShieldCheck, tone: "accent" },
-  { label: "Ticket Scans / min", value: "412", delta: "+18", icon: Ticket, tone: "primary" },
-];
-
 const attendance = Array.from({ length: 12 }).map((_, i) => ({
   t: `${16 + Math.floor(i / 2)}:${i % 2 ? "30" : "00"}`,
   in: 2000 + i * 900 + (i > 6 ? 1200 : 0),
