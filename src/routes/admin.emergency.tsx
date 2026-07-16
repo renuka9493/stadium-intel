@@ -103,8 +103,8 @@ function AdminEmergency() {
                 { l: "Dial 112 Ops", i: PhoneCall, t: "warning" },
                 { l: "Alert Fire Bay", i: Siren, t: "warning" },
               ].map((a) => (
-                <button key={a.l} className={`inline-flex items-center gap-1.5 rounded-[6px] border border-border bg-background px-2 py-1.5 text-[10.5px] font-medium hover:text-${a.t}`}>
-                  <a.i className={`h-3 w-3 text-${a.t === "critical" ? "critical" : "warning"}`} />
+                <button key={a.l} className="inline-flex items-center gap-1.5 rounded-[6px] border border-border bg-background px-2 py-1.5 text-[10.5px] font-medium hover:text-foreground">
+                  <a.i className={`h-3 w-3 ${a.t === "critical" ? "text-critical" : "text-warning"}`} />
                   <span className="truncate">{a.l}</span>
                 </button>
               ))}
