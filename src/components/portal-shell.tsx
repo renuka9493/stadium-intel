@@ -159,7 +159,7 @@ export function PortalShell({ label, items, children }: Props) {
             </div>
           </header>
           <main className="flex-1 bg-background">
-            <div className="mx-auto w-full max-w-[1720px] p-3 lg:p-3.5 fade-in">
+            <div className="mx-auto w-full max-w-[1720px] p-2 sm:p-2.5 lg:p-3 fade-in">
               {children ?? <Outlet />}
             </div>
           </main>

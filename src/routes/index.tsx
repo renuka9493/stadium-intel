@@ -99,7 +99,7 @@ function MissionControl() {
   return (
     <div className="space-y-3">
       {/* KPI ROW */}
-      <div className="grid grid-cols-2 gap-2 md:grid-cols-3 xl:grid-cols-6">
+      <div className="grid grid-cols-3 gap-1.5 sm:gap-2 md:grid-cols-3 xl:grid-cols-6">
         <Kpi icon={Users} label="Attendance" value={attendance} suffix="/ 88,000" delta={0.4} tone="neutral" />
         <Kpi
           icon={Activity}

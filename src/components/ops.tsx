@@ -64,13 +64,13 @@ export function Panel({
   return (
     <section className={`rounded-[10px] border border-border bg-card shadow-card ${className}`}>
       {(title || right) && (
-        <header className="flex min-h-8 items-center justify-between gap-2 border-b border-border px-3 py-1.5">
+        <header className="flex min-h-7 items-center justify-between gap-2 border-b border-border px-2.5 py-1">
           <div className="min-w-0">
             {title && (
-              <h2 className="truncate text-[12px] font-semibold tracking-tight">{title}</h2>
+              <h2 className="truncate text-[11.5px] font-semibold tracking-tight">{title}</h2>
             )}
             {subtitle && (
-              <p className="truncate text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+              <p className="truncate text-[9.5px] uppercase tracking-[0.14em] text-muted-foreground">
                 {subtitle}
               </p>
             )}
@@ -78,7 +78,7 @@ export function Panel({
           {right ? <div className="flex shrink-0 items-center gap-1.5">{right}</div> : null}
         </header>
       )}
-      <div className={pad ? "p-3" : ""}>{children}</div>
+      <div className={pad ? "p-2.5" : ""}>{children}</div>
     </section>
   );
 }
@@ -124,30 +124,30 @@ export function Kpi({
   const trendUp = (delta ?? 0) > 0;
   const trendTone = delta == null ? "" : trendUp ? "text-warning" : "text-success";
   return (
-    <div className="rounded-[10px] border border-border bg-card p-3 shadow-card">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className={`grid h-6 w-6 place-items-center rounded-md ring-1 ${toneBg[tone]} ${toneRing[tone]}`}>
+    <div className="rounded-[10px] border border-border bg-card p-2 shadow-card sm:p-2.5">
+      <div className="flex items-center justify-between gap-1">
+        <div className="flex min-w-0 items-center gap-1.5">
+          <div className={`grid h-5 w-5 shrink-0 place-items-center rounded-md ring-1 ${toneBg[tone]} ${toneRing[tone]}`}>
             <Icon className="h-3 w-3" strokeWidth={2} />
           </div>
-          <span className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
+          <span className="truncate text-[9.5px] uppercase tracking-[0.14em] text-muted-foreground">
             {label}
           </span>
         </div>
         {delta != null && (
-          <span className={`inline-flex items-center gap-0.5 text-[10px] font-medium tabular-nums ${trendTone}`}>
+          <span className={`hidden shrink-0 items-center gap-0.5 text-[9.5px] font-medium tabular-nums sm:inline-flex ${trendTone}`}>
             {trendUp ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}
             {Math.abs(delta).toFixed(1)}%
           </span>
         )}
       </div>
-      <div className="mt-2 flex items-baseline gap-1">
-        <span className="text-[22px] font-semibold tabular-nums tracking-tight leading-none">
+      <div className="mt-1.5 flex items-baseline gap-1">
+        <span className="text-[17px] font-semibold tabular-nums tracking-tight leading-none sm:text-[19px]">
           {format === "decimal"
             ? animated.toFixed(1)
             : Math.round(animated).toLocaleString()}
         </span>
-        {suffix && <span className="text-[12px] text-muted-foreground">{suffix}</span>}
+        {suffix && <span className="truncate text-[10.5px] text-muted-foreground">{suffix}</span>}
       </div>
     </div>
   );
