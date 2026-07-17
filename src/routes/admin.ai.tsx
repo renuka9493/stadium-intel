@@ -106,6 +106,19 @@ function AdminAi() {
                 <div className="text-[9px] uppercase tracking-[0.14em] text-muted-foreground">Confidence</div>
                 <div className="mt-1"><MiniBar value={r.confidence} tone="primary" /></div>
               </div>
+              <div className="sm:col-span-2">
+                <div className="text-[9px] uppercase tracking-[0.14em] text-muted-foreground">Data sources</div>
+                <div className="mt-1 flex flex-wrap gap-1">
+                  {(r.dataSources ?? []).map((d, di) => (
+                    <span
+                      key={di}
+                      className="inline-flex items-center rounded-[4px] border border-border bg-secondary/50 px-1.5 py-0.5 text-[10px] text-foreground/80"
+                    >
+                      {d}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
             <div className="mt-2 flex items-center justify-end gap-1.5 border-t border-border pt-2">
               <button className="inline-flex items-center gap-1 rounded-[6px] border border-border bg-background px-2 py-1 text-[10px] text-muted-foreground hover:text-foreground">
