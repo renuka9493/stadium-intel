@@ -117,6 +117,7 @@ type Recommendation = {
   priority: Priority;
   problem: string;
   reasoning: string;
+  dataSources: string[];
   action: string;
   improvement: string;
   confidence: number;
@@ -128,6 +129,7 @@ const recommendations: Recommendation[] = [
     problem: "Gate C is operating at 94% capacity.",
     reasoning:
       "Ingress rate over the last 10 minutes combined with pre-match ticket scan data projects Gate C will hit 100% within 6 minutes.",
+    dataSources: ["Gate sensor telemetry", "Ticket scan feed", "Historical ingress curves"],
     action: "Open Gate D and redirect spectators arriving from the East entrance.",
     improvement: "Reduce waiting time by approximately 18%.",
     confidence: 96,
@@ -137,6 +139,7 @@ const recommendations: Recommendation[] = [
     problem: "Food Court West has reached 91% occupancy.",
     reasoning:
       "Historical halftime data combined with current crowd movement indicates congestion will continue increasing.",
+    dataSources: ["Vendor queue sensors", "Historical halftime patterns", "Live crowd density"],
     action: "Deploy 2 additional attendants and open express lanes 4–5.",
     improvement: "Queue time reduced by approximately 30%.",
     confidence: 94,
@@ -146,6 +149,7 @@ const recommendations: Recommendation[] = [
     problem: "Parking Lot B is at 91% occupancy.",
     reasoning:
       "Inbound vehicle flow from Highway 4 exceeds Lot B intake rate; Lot F is currently underutilized at 38%.",
+    dataSources: ["Parking occupancy sensors", "Highway inbound counters", "Wayfinding signage state"],
     action: "Route inbound vehicles to Lot F and update wayfinding signage.",
     improvement: "Balance parking load by 22%.",
     confidence: 88,
@@ -155,6 +159,7 @@ const recommendations: Recommendation[] = [
     problem: "Sections 214–220 report elevated temperature readings.",
     reasoning:
       "Ambient sensors show +4°C above target with direct sun exposure on upper east concourse through halftime.",
+    dataSources: ["Ambient temperature sensors", "Weather feed", "HVAC telemetry"],
     action: "Increase cooling output by 15% in the upper east concourse.",
     improvement: "Improve comfort index by 12%.",
     confidence: 82,
@@ -164,6 +169,7 @@ const recommendations: Recommendation[] = [
     problem: "Concourse 3 shows minor litter accumulation.",
     reasoning:
       "Computer vision on Camera CV-31 detects debris density trending 2.1× the pre-match baseline.",
+    dataSources: ["CCTV computer vision (CV-31)", "Cleaning crew schedule"],
     action: "Dispatch cleaning crew during the next play stoppage.",
     improvement: "Fan sentiment score up 6%.",
     confidence: 74,
@@ -244,6 +250,19 @@ function RecommendationCard({ rec }: { rec: Recommendation }) {
       <div className="mt-2 space-y-1.5">
         <Field label="Problem" value={rec.problem} />
         <Field label="Reasoning" value={rec.reasoning} />
+        <div>
+          <div className="text-[9px] uppercase tracking-[0.14em] text-muted-foreground">Data sources</div>
+          <div className="mt-1 flex flex-wrap gap-1">
+            {rec.dataSources.map((d, i) => (
+              <span
+                key={i}
+                className="inline-flex items-center rounded-[4px] border border-border bg-secondary/50 px-1.5 py-0.5 text-[10px] text-foreground/80"
+              >
+                {d}
+              </span>
+            ))}
+          </div>
+        </div>
         <Field label="Action" value={rec.action} tone="accent" />
         <Field label="Impact" value={rec.improvement} tone="success" />
       </div>

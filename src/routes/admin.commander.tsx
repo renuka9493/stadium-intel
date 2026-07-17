@@ -5,6 +5,7 @@ import {
   AlertTriangle,
   Brain,
   CheckCircle2,
+  Database,
   Loader2,
   Pause,
   Play,
@@ -275,6 +276,7 @@ function InsightCard({ insight, isNew }: { insight: Insight; isNew: boolean }) {
           label="AI Analysis"
           text={insight.reasoning}
         />
+        <DataSources sources={insight.dataSources ?? []} />
         <Section
           icon={<CheckCircle2 className="h-3 w-3 text-success" />}
           label="Recommended Action"
@@ -320,6 +322,28 @@ function Section({
       <p className={`text-[11.5px] leading-snug ${emphasize ? "text-foreground" : "text-foreground/80"}`}>
         {text}
       </p>
+    </div>
+  );
+}
+
+function DataSources({ sources }: { sources: string[] }) {
+  if (!sources.length) return null;
+  return (
+    <div>
+      <div className="mb-0.5 flex items-center gap-1 text-[9px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+        <Database className="h-3 w-3 text-primary" />
+        Data Sources Used
+      </div>
+      <div className="flex flex-wrap gap-1">
+        {sources.map((s, i) => (
+          <span
+            key={i}
+            className="inline-flex items-center rounded-[4px] border border-border bg-secondary/50 px-1.5 py-0.5 text-[10px] text-foreground/80"
+          >
+            {s}
+          </span>
+        ))}
+      </div>
     </div>
   );
 }
