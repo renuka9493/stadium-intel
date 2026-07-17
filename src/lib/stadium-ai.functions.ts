@@ -84,6 +84,7 @@ const RecSchema = z.object({
       problem: z.string(),
       recommendation: z.string(),
       reasoning: z.string(),
+      dataSources: z.array(z.string()).min(1).max(6),
       expectedImpact: z.string(),
       confidence: z.number(),
     }),
@@ -110,6 +111,10 @@ For each recommendation:
 - problem: one sentence, reference the specific gate / zone / vendor and its exact metric.
 - recommendation: the concrete action to take now.
 - reasoning: why the AI reached this conclusion, referencing the data.
+- dataSources: 2-4 short labels naming the signals used (e.g. "Live crowd density",
+  "Historical halftime patterns", "Gate sensor telemetry", "Parking intake rate",
+  "Medical dispatch feed", "Food vendor queue sensors", "CCTV computer vision").
+  Only use sources actually reflected in the snapshot or plausible historical data.
 - expectedImpact: quantified expected improvement (e.g. "reduce wait by ~18%").
 - confidence: integer 0-100 reflecting how strong the signal is.
 
