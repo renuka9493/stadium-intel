@@ -135,7 +135,7 @@ export function Kpi({
           </span>
         </div>
         {delta != null && (
-          <span className={`inline-flex shrink-0 items-center gap-0.5 text-[9.5px] font-medium tabular-nums ${trendTone}`}>
+          <span className={`hidden shrink-0 items-center gap-0.5 text-[9.5px] font-medium tabular-nums sm:inline-flex ${trendTone}`}>
             {trendUp ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}
             {Math.abs(delta).toFixed(1)}%
           </span>
