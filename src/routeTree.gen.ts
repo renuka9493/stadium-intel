@@ -26,6 +26,7 @@ import { Route as AdminSummaryRouteImport } from './routes/admin.summary'
 import { Route as AdminSimulatorRouteImport } from './routes/admin.simulator'
 import { Route as AdminQueuesRouteImport } from './routes/admin.queues'
 import { Route as AdminMissionRouteImport } from './routes/admin.mission'
+import { Route as AdminMatchreportRouteImport } from './routes/admin.matchreport'
 import { Route as AdminIncidentsRouteImport } from './routes/admin.incidents'
 import { Route as AdminHeatmapRouteImport } from './routes/admin.heatmap'
 import { Route as AdminEmergencyRouteImport } from './routes/admin.emergency'
@@ -120,6 +121,11 @@ const AdminMissionRoute = AdminMissionRouteImport.update({
   path: '/mission',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminMatchreportRoute = AdminMatchreportRouteImport.update({
+  id: '/matchreport',
+  path: '/matchreport',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminIncidentsRoute = AdminIncidentsRouteImport.update({
   id: '/incidents',
   path: '/incidents',
@@ -173,6 +179,7 @@ export interface FileRoutesByFullPath {
   '/admin/emergency': typeof AdminEmergencyRoute
   '/admin/heatmap': typeof AdminHeatmapRoute
   '/admin/incidents': typeof AdminIncidentsRoute
+  '/admin/matchreport': typeof AdminMatchreportRoute
   '/admin/mission': typeof AdminMissionRoute
   '/admin/queues': typeof AdminQueuesRoute
   '/admin/simulator': typeof AdminSimulatorRoute
@@ -198,6 +205,7 @@ export interface FileRoutesByTo {
   '/admin/emergency': typeof AdminEmergencyRoute
   '/admin/heatmap': typeof AdminHeatmapRoute
   '/admin/incidents': typeof AdminIncidentsRoute
+  '/admin/matchreport': typeof AdminMatchreportRoute
   '/admin/mission': typeof AdminMissionRoute
   '/admin/queues': typeof AdminQueuesRoute
   '/admin/simulator': typeof AdminSimulatorRoute
@@ -226,6 +234,7 @@ export interface FileRoutesById {
   '/admin/emergency': typeof AdminEmergencyRoute
   '/admin/heatmap': typeof AdminHeatmapRoute
   '/admin/incidents': typeof AdminIncidentsRoute
+  '/admin/matchreport': typeof AdminMatchreportRoute
   '/admin/mission': typeof AdminMissionRoute
   '/admin/queues': typeof AdminQueuesRoute
   '/admin/simulator': typeof AdminSimulatorRoute
@@ -255,6 +264,7 @@ export interface FileRouteTypes {
     | '/admin/emergency'
     | '/admin/heatmap'
     | '/admin/incidents'
+    | '/admin/matchreport'
     | '/admin/mission'
     | '/admin/queues'
     | '/admin/simulator'
@@ -280,6 +290,7 @@ export interface FileRouteTypes {
     | '/admin/emergency'
     | '/admin/heatmap'
     | '/admin/incidents'
+    | '/admin/matchreport'
     | '/admin/mission'
     | '/admin/queues'
     | '/admin/simulator'
@@ -307,6 +318,7 @@ export interface FileRouteTypes {
     | '/admin/emergency'
     | '/admin/heatmap'
     | '/admin/incidents'
+    | '/admin/matchreport'
     | '/admin/mission'
     | '/admin/queues'
     | '/admin/simulator'
@@ -450,6 +462,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminMissionRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/matchreport': {
+      id: '/admin/matchreport'
+      path: '/matchreport'
+      fullPath: '/admin/matchreport'
+      preLoaderRoute: typeof AdminMatchreportRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/incidents': {
       id: '/admin/incidents'
       path: '/incidents'
@@ -518,6 +537,7 @@ interface AdminRouteChildren {
   AdminEmergencyRoute: typeof AdminEmergencyRoute
   AdminHeatmapRoute: typeof AdminHeatmapRoute
   AdminIncidentsRoute: typeof AdminIncidentsRoute
+  AdminMatchreportRoute: typeof AdminMatchreportRoute
   AdminMissionRoute: typeof AdminMissionRoute
   AdminQueuesRoute: typeof AdminQueuesRoute
   AdminSimulatorRoute: typeof AdminSimulatorRoute
@@ -534,6 +554,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminEmergencyRoute: AdminEmergencyRoute,
   AdminHeatmapRoute: AdminHeatmapRoute,
   AdminIncidentsRoute: AdminIncidentsRoute,
+  AdminMatchreportRoute: AdminMatchreportRoute,
   AdminMissionRoute: AdminMissionRoute,
   AdminQueuesRoute: AdminQueuesRoute,
   AdminSimulatorRoute: AdminSimulatorRoute,
