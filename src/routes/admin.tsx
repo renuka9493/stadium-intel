@@ -13,6 +13,7 @@ import {
   FileSearch,
   Sparkles,
   History,
+  ClipboardList,
 } from "lucide-react";
 
 const items = [
@@ -24,6 +25,7 @@ const items = [
   { title: "Crowd Analytics", url: "/admin/crowd", icon: BarChart3 },
   { title: "Emergency Center", url: "/admin/emergency", icon: Siren },
   { title: "Reports", url: "/admin/summary", icon: FileText },
+  { title: "AI Match Summary", url: "/admin/matchreport", icon: ClipboardList },
   { title: "AI Recommendations", url: "/admin/ai", icon: Sparkles },
   { title: "AI Mission Commander", url: "/admin/commander", icon: Bot },
   { title: "Activity Log", url: "/admin/activity", icon: History },
