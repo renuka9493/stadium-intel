@@ -14,10 +14,12 @@ import {
   Sparkles,
   History,
   ClipboardList,
+  LayoutDashboard,
 } from "lucide-react";
 
 const items = [
   { title: "Mission Control", url: "/", icon: Gauge },
+  { title: "Executive Dashboard", url: "/admin/executive", icon: LayoutDashboard },
   { title: "Fan Assistant", url: "/fan", icon: Bot },
   { title: "AI Scenario Simulator", url: "/admin/simulator", icon: FlaskConical },
   { title: "Stadium Map", url: "/admin/heatmap", icon: MapIcon },
