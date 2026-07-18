@@ -29,6 +29,7 @@ import { Route as AdminMissionRouteImport } from './routes/admin.mission'
 import { Route as AdminMatchreportRouteImport } from './routes/admin.matchreport'
 import { Route as AdminIncidentsRouteImport } from './routes/admin.incidents'
 import { Route as AdminHeatmapRouteImport } from './routes/admin.heatmap'
+import { Route as AdminExecutiveRouteImport } from './routes/admin.executive'
 import { Route as AdminEmergencyRouteImport } from './routes/admin.emergency'
 import { Route as AdminCrowdRouteImport } from './routes/admin.crowd'
 import { Route as AdminCommanderRouteImport } from './routes/admin.commander'
@@ -136,6 +137,11 @@ const AdminHeatmapRoute = AdminHeatmapRouteImport.update({
   path: '/heatmap',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminExecutiveRoute = AdminExecutiveRouteImport.update({
+  id: '/executive',
+  path: '/executive',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminEmergencyRoute = AdminEmergencyRouteImport.update({
   id: '/emergency',
   path: '/emergency',
@@ -177,6 +183,7 @@ export interface FileRoutesByFullPath {
   '/admin/commander': typeof AdminCommanderRoute
   '/admin/crowd': typeof AdminCrowdRoute
   '/admin/emergency': typeof AdminEmergencyRoute
+  '/admin/executive': typeof AdminExecutiveRoute
   '/admin/heatmap': typeof AdminHeatmapRoute
   '/admin/incidents': typeof AdminIncidentsRoute
   '/admin/matchreport': typeof AdminMatchreportRoute
@@ -203,6 +210,7 @@ export interface FileRoutesByTo {
   '/admin/commander': typeof AdminCommanderRoute
   '/admin/crowd': typeof AdminCrowdRoute
   '/admin/emergency': typeof AdminEmergencyRoute
+  '/admin/executive': typeof AdminExecutiveRoute
   '/admin/heatmap': typeof AdminHeatmapRoute
   '/admin/incidents': typeof AdminIncidentsRoute
   '/admin/matchreport': typeof AdminMatchreportRoute
@@ -232,6 +240,7 @@ export interface FileRoutesById {
   '/admin/commander': typeof AdminCommanderRoute
   '/admin/crowd': typeof AdminCrowdRoute
   '/admin/emergency': typeof AdminEmergencyRoute
+  '/admin/executive': typeof AdminExecutiveRoute
   '/admin/heatmap': typeof AdminHeatmapRoute
   '/admin/incidents': typeof AdminIncidentsRoute
   '/admin/matchreport': typeof AdminMatchreportRoute
@@ -262,6 +271,7 @@ export interface FileRouteTypes {
     | '/admin/commander'
     | '/admin/crowd'
     | '/admin/emergency'
+    | '/admin/executive'
     | '/admin/heatmap'
     | '/admin/incidents'
     | '/admin/matchreport'
@@ -288,6 +298,7 @@ export interface FileRouteTypes {
     | '/admin/commander'
     | '/admin/crowd'
     | '/admin/emergency'
+    | '/admin/executive'
     | '/admin/heatmap'
     | '/admin/incidents'
     | '/admin/matchreport'
@@ -316,6 +327,7 @@ export interface FileRouteTypes {
     | '/admin/commander'
     | '/admin/crowd'
     | '/admin/emergency'
+    | '/admin/executive'
     | '/admin/heatmap'
     | '/admin/incidents'
     | '/admin/matchreport'
@@ -483,6 +495,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminHeatmapRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/executive': {
+      id: '/admin/executive'
+      path: '/executive'
+      fullPath: '/admin/executive'
+      preLoaderRoute: typeof AdminExecutiveRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/emergency': {
       id: '/admin/emergency'
       path: '/emergency'
@@ -535,6 +554,7 @@ interface AdminRouteChildren {
   AdminCommanderRoute: typeof AdminCommanderRoute
   AdminCrowdRoute: typeof AdminCrowdRoute
   AdminEmergencyRoute: typeof AdminEmergencyRoute
+  AdminExecutiveRoute: typeof AdminExecutiveRoute
   AdminHeatmapRoute: typeof AdminHeatmapRoute
   AdminIncidentsRoute: typeof AdminIncidentsRoute
   AdminMatchreportRoute: typeof AdminMatchreportRoute
@@ -552,6 +572,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminCommanderRoute: AdminCommanderRoute,
   AdminCrowdRoute: AdminCrowdRoute,
   AdminEmergencyRoute: AdminEmergencyRoute,
+  AdminExecutiveRoute: AdminExecutiveRoute,
   AdminHeatmapRoute: AdminHeatmapRoute,
   AdminIncidentsRoute: AdminIncidentsRoute,
   AdminMatchreportRoute: AdminMatchreportRoute,
