@@ -82,7 +82,7 @@ function CircularGauge({
             cx={size / 2}
             cy={size / 2}
             r={r}
-            stroke="hsl(var(--border))"
+            stroke="var(--border)"
             strokeWidth={stroke}
             fill="none"
           />
