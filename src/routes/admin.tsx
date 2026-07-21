@@ -16,6 +16,7 @@ import {
   ClipboardList,
   LayoutDashboard,
   Boxes,
+  GitCommitVertical,
 } from "lucide-react";
 
 const items = [
@@ -33,6 +34,7 @@ const items = [
   { title: "AI Recommendations", url: "/admin/ai", icon: Sparkles },
   { title: "AI Mission Commander", url: "/admin/commander", icon: Bot },
   { title: "Activity Log", url: "/admin/activity", icon: History },
+  { title: "AI Decision Timeline", url: "/admin/decisions", icon: GitCommitVertical },
   { title: "Case Report", url: "/admin/case", icon: FileSearch },
   { title: "Settings", url: "/admin", icon: Settings },
 ];
