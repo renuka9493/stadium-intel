@@ -15,6 +15,7 @@ import {
   History,
   ClipboardList,
   LayoutDashboard,
+  Boxes,
 } from "lucide-react";
 
 const items = [
@@ -23,6 +24,7 @@ const items = [
   { title: "Fan Assistant", url: "/fan", icon: Bot },
   { title: "AI Scenario Simulator", url: "/admin/simulator", icon: FlaskConical },
   { title: "Stadium Map", url: "/admin/heatmap", icon: MapIcon },
+  { title: "Digital Twin", url: "/admin/twin", icon: Boxes },
   { title: "Incidents", url: "/admin/incidents", icon: Activity },
   { title: "Crowd Analytics", url: "/admin/crowd", icon: BarChart3 },
   { title: "Emergency Center", url: "/admin/emergency", icon: Siren },
